@@ -241,6 +241,13 @@ public class MatrixUtil {
 		return loadDataWithXY(new FileInputStream(filePath), split, intercept);
 	}
 
+	/**
+	 * 添加截距项
+	 * 
+	 * @param x
+	 *            要添加截距项的矩阵
+	 * @return 添加过截距项的矩阵
+	 */
 	public static FloatMatrix addIntercept(FloatMatrix x) {
 
 		FloatMatrix matrix = new FloatMatrix(x.rows, x.columns + 1);
@@ -252,4 +259,56 @@ public class MatrixUtil {
 		return matrix;
 	}
 
+	/**
+	 * 计算矩阵标准差(N-1)
+	 * 
+	 * @param x
+	 *            要计算的矩阵
+	 * @param dim
+	 *            1 计算列标准差，2计算行标准差
+	 * @return 计算好的标准差矩阵
+	 */
+	public static FloatMatrix std(FloatMatrix x, int dim) {
+
+		return std(x, true, dim);
+	}
+
+	/**
+	 * 计算矩阵标准差
+	 * 
+	 * @param x
+	 *            要计算的矩阵
+	 * @param flag
+	 *            true计算除以N-1,false计算除以N
+	 * @param dim
+	 *            1 计算列标准差，2计算行标准差
+	 * @return 计算好的标准差矩阵
+	 */
+	public static FloatMatrix std(FloatMatrix x, boolean flag, int dim) {
+
+		int size;
+		float sum;// 和
+		float std;
+		FloatMatrix mu;// 平均值
+		FloatMatrix temp;// 临时变量
+		FloatMatrix matrix;// 计算结果
+
+		if (dim == 1) {
+			size = x.columns;
+			mu = x.columnMeans();
+			matrix = new FloatMatrix(1, size);
+			for (int i = 0; i < size; i++) {
+				temp = x.getColumn(i).sub(mu.get(i));
+				sum = temp.transpose().mmul(temp).get(0);
+				std = (float) Math.sqrt(sum / (temp.rows - 1));
+				matrix.put(i, std);
+			}
+		} else {
+			size = x.rows;
+			mu = x.rowMeans();
+			matrix = new FloatMatrix(size, 1);
+		}
+
+		return matrix;
+	}
 }

@@ -71,7 +71,7 @@ public class LinearRegression implements BaseRegression {
 
 		List<FloatMatrix> history = bgd.getHistory();
 		for (FloatMatrix theta : history)
-			logger.debug("theta history : {}", this.computeCost(theta));
+			logger.debug("cost history: {}", this.computeCost(theta));
 
 		return result;
 	}

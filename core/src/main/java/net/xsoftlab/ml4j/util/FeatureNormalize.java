@@ -27,7 +27,7 @@ public class FeatureNormalize {
 		this.data = data;
 
 		mu = data.columnMeans();
-		sigma = data.columnMaxs().sub(data.columnMins());
+		sigma = MatrixUtil.std(data, 1);
 		data_normal = new FloatMatrix(data.rows, data.columns);
 	}
 
