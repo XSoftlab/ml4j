@@ -1,4 +1,4 @@
-package net.xsoftlab.ml4j.common;
+package net.xsoftlab.ml4j.util;
 
 import java.util.ArrayList;
 import java.util.List;

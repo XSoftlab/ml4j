@@ -1,4 +1,4 @@
-package net.xsoftlab.ml4j.common;
+package net.xsoftlab.ml4j.util;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -10,19 +10,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.xsoftlab.ml4j.exception.Ml4jException;
+
 import org.jblas.FloatMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 数据加载器
+ * 矩阵工具 - jblas拓展
  * 
  * @author 王彦超
  *
  */
-public class DataLoader {
+public class MatrixUtil {
 
-	public static Logger logger = LoggerFactory.getLogger(DataLoader.class);
+	public static Logger logger = LoggerFactory.getLogger(MatrixUtil.class);
 
 	/**
 	 * 将字符串数组转化为float数组
@@ -238,4 +240,16 @@ public class DataLoader {
 
 		return loadDataWithXY(new FileInputStream(filePath), split, intercept);
 	}
+
+	public static FloatMatrix addIntercept(FloatMatrix x) {
+
+		FloatMatrix matrix = new FloatMatrix(x.rows, x.columns + 1);
+		matrix.putColumn(0, FloatMatrix.ones(x.rows));
+		for (int i = 0; i < x.columns; i++) {
+			matrix.putColumn(i + 1, x.getColumn(i));
+		}
+
+		return matrix;
+	}
+
 }

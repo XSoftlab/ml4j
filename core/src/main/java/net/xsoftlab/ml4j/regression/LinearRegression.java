@@ -2,7 +2,7 @@ package net.xsoftlab.ml4j.regression;
 
 import java.util.List;
 
-import net.xsoftlab.ml4j.common.BGD;
+import net.xsoftlab.ml4j.util.BGD;
 
 import org.jblas.FloatMatrix;
 import org.slf4j.Logger;

@@ -1,4 +1,4 @@
-package net.xsoftlab.ml4j.common;
+package net.xsoftlab.ml4j.exception;
 
 public class Ml4jException extends RuntimeException {
 
