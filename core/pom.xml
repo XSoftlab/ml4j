@@ -12,8 +12,6 @@
 	</parent>
 
 	<artifactId>core</artifactId>
-	<name>core</name>
-	<url>http://maven.apache.org</url>
 
 	<properties>
 		<jblas.version>1.2.3</jblas.version>

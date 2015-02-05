@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.jblas.FloatMatrix;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 数据加载器
@@ -19,6 +21,8 @@ import org.jblas.FloatMatrix;
  *
  */
 public class DataLoader {
+
+	public static Logger logger = LoggerFactory.getLogger(DataLoader.class);
 
 	/**
 	 * 将字符串数组转化为float数组
@@ -75,8 +79,10 @@ public class DataLoader {
 			data = line.trim().split(split);
 			if (numColumns < 0)
 				numColumns = data.length;
-			else
-				assert data.length == numColumns : "数据前后大小不一致！";
+			else if (data.length != numColumns) {
+				logger.error("数据前后大小不一致！");
+				throw new Ml4jException("数据前后大小不一致！");
+			}
 
 			list.add(convert(data, intercept));
 		}
@@ -162,7 +168,7 @@ public class DataLoader {
 
 		String line;
 		String[] data;
-		FloatMatrix[] matrix = new FloatMatrix[2];
+		FloatMatrix[] matrixs = new FloatMatrix[2];
 		int numColumns = -1;
 		List<float[]> list;
 		List<float[]> resList;
@@ -174,8 +180,10 @@ public class DataLoader {
 			data = line.trim().split(split);
 			if (numColumns < 0)
 				numColumns = data.length;
-			else
-				assert data.length == numColumns : "数据前后大小不一致！";
+			else if (data.length != numColumns) {
+				logger.error("数据前后大小不一致！");
+				throw new Ml4jException("数据前后大小不一致！");
+			}
 
 			resList = convertWithXY(data, intercept);
 			if (map.containsKey("0")) {
@@ -199,17 +207,19 @@ public class DataLoader {
 			}
 		}
 
+		numColumns = intercept ? numColumns : numColumns - 1;
+
 		List<float[]> map0 = map.get("0");
-		matrix[0] = new FloatMatrix(map0.size(), numColumns);
+		matrixs[0] = new FloatMatrix(map0.size(), numColumns);
 		for (int i = 0; i < map0.size(); i++)
-			matrix[0].putRow(i, new FloatMatrix(map0.get(i)));
+			matrixs[0].putRow(i, new FloatMatrix(map0.get(i)));
 
 		List<float[]> map1 = map.get("1");
-		matrix[1] = new FloatMatrix(map1.size(), 1);
+		matrixs[1] = new FloatMatrix(map1.size(), 1);
 		for (int i = 0; i < map1.size(); i++)
-			matrix[1].putRow(i, new FloatMatrix(map1.get(i)));
+			matrixs[1].putRow(i, new FloatMatrix(map1.get(i)));
 
-		return matrix;
+		return matrixs;
 	}
 
 	/**

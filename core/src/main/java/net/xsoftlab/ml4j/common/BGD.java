@@ -59,12 +59,12 @@ public class BGD {
 		for (int i = 0; i < iterations; i++) {
 
 			h = x.mmul(theta).sub(y);// x * theta - y
-			h1 = x.transpose().mmul(h).mul(alpha / m);// x' * h * (alpha / m)
+			// x' * h * (alpha / m)
+			h1 = x.transpose().mmul(h).mul(alpha / m);
 			theta = theta.sub(h1);// theta = theta - h1
 
-			if (flag){
+			if (flag) {
 				history.add(theta);
-				System.out.println(theta);
 			}
 		}
 
