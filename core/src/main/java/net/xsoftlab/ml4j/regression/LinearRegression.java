@@ -23,6 +23,7 @@ public class LinearRegression implements BaseRegression {
 	private int iterations;// 训练次数
 
 	private int m;// 样本数量
+	private boolean printCost = true;// 是否打印代价函数
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -49,7 +50,19 @@ public class LinearRegression implements BaseRegression {
 		this.iterations = iterations;
 
 		this.m = y.length;
-		this.theta = FloatMatrix.zeros(x.columns, 1);
+		this.theta = FloatMatrix.rand(x.columns, 1);
+	}
+
+	/**
+	 * 初始化
+	 * 
+	 * @param printCost
+	 *            是否打印代价函数
+	 */
+	public LinearRegression(FloatMatrix x, FloatMatrix y, float alpha, int iterations, boolean printCost) {
+		this(x, y, alpha, iterations);
+
+		this.printCost = printCost;
 	}
 
 	@Override
@@ -69,9 +82,11 @@ public class LinearRegression implements BaseRegression {
 		BGD bgd = new BGD();
 		FloatMatrix result = bgd.compute(x, y, theta, alpha, iterations);
 
-		List<FloatMatrix> history = bgd.getHistory();
-		for (FloatMatrix theta : history)
-			logger.debug("cost history: {}", this.computeCost(theta));
+		if (printCost) {
+			List<FloatMatrix> history = bgd.getHistory();
+			for (FloatMatrix theta : history)
+				logger.debug("cost history: {}", this.computeCost(theta));
+		}
 
 		return result;
 	}

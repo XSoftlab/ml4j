@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import net.xsoftlab.ml4j.exception.Ml4jException;
 
@@ -82,8 +83,9 @@ public class MatrixUtil {
 			if (numColumns < 0)
 				numColumns = data.length;
 			else if (data.length != numColumns) {
-				logger.error("数据前后大小不一致！");
-				throw new Ml4jException("数据前后大小不一致！");
+				Ml4jException e = new Ml4jException("数据列大小不一致！");
+				logger.error("数据列大小不一致！", e);
+				throw e;
 			}
 
 			list.add(convert(data, intercept));
@@ -183,8 +185,9 @@ public class MatrixUtil {
 			if (numColumns < 0)
 				numColumns = data.length;
 			else if (data.length != numColumns) {
-				logger.error("数据前后大小不一致！");
-				throw new Ml4jException("数据前后大小不一致！");
+				Ml4jException e = new Ml4jException("数据列大小不一致！");
+				logger.error("数据列大小不一致！", e);
+				throw e;
 			}
 
 			resList = convertWithXY(data, intercept);
@@ -242,73 +245,102 @@ public class MatrixUtil {
 	}
 
 	/**
+	 * 从文件中加载包含X、Y的数据 - 添加截距项
+	 * 
+	 * @param filePath
+	 *            文件路径
+	 * @param split
+	 *            分隔符
+	 * 
+	 * @return 数据矩阵数组
+	 */
+	public static FloatMatrix[] loadDataWithXY(String filePath, String split) throws IOException {
+
+		return loadDataWithXY(new FileInputStream(filePath), split, true);
+	}
+
+	/**
 	 * 添加截距项
 	 * 
-	 * @param x
+	 * @param matrix
 	 *            要添加截距项的矩阵
 	 * @return 添加过截距项的矩阵
 	 */
-	public static FloatMatrix addIntercept(FloatMatrix x) {
+	public static FloatMatrix addIntercept(FloatMatrix matrix) {
 
-		FloatMatrix matrix = new FloatMatrix(x.rows, x.columns + 1);
-		matrix.putColumn(0, FloatMatrix.ones(x.rows));
-		for (int i = 0; i < x.columns; i++) {
-			matrix.putColumn(i + 1, x.getColumn(i));
+		FloatMatrix result = new FloatMatrix(matrix.rows, matrix.columns + 1);
+		result.putColumn(0, FloatMatrix.ones(matrix.rows));
+		for (int i = 0; i < matrix.columns; i++) {
+			result.putColumn(i + 1, matrix.getColumn(i));
 		}
+
+		return result;
+	}
+
+	/**
+	 * 打乱矩阵 - 按行打乱
+	 * 
+	 * @param matrix
+	 *            要打乱的矩阵
+	 * @return 打乱后的矩阵
+	 */
+	public static FloatMatrix shuffle(FloatMatrix matrix) {
+
+		Random random = new Random();
+		for (int i = matrix.rows; i > 1; i--)
+			matrix.swapRows(i - 1, random.nextInt(i));
 
 		return matrix;
 	}
 
 	/**
-	 * 计算矩阵标准差(N-1)
+	 * 矩阵截取 - 按行
 	 * 
-	 * @param x
-	 *            要计算的矩阵
-	 * @param dim
-	 *            1 计算列标准差，2计算行标准差
-	 * @return 计算好的标准差矩阵
+	 * @param matrix
+	 *            要截取的矩阵
+	 * @param start
+	 *            起始位置
+	 * @param end
+	 *            结束位置
+	 * @return 截取后的矩阵
 	 */
-	public static FloatMatrix std(FloatMatrix x, int dim) {
+	public static FloatMatrix subMatrixs(FloatMatrix matrix, int start, int end) {
 
-		return std(x, true, dim);
+		return subMatrixs(matrix, start, end, true);
 	}
 
 	/**
-	 * 计算矩阵标准差
+	 * 矩阵截取
 	 * 
-	 * @param x
-	 *            要计算的矩阵
+	 * @param matrix
+	 *            要截取的矩阵
+	 * @param start
+	 *            起始位置
+	 * @param end
+	 *            结束位置
 	 * @param flag
-	 *            true计算除以N-1,false计算除以N
-	 * @param dim
-	 *            1 计算列标准差，2计算行标准差
-	 * @return 计算好的标准差矩阵
+	 *            true - 按行截取,false - 按列截取
+	 * @return 截取后的矩阵
 	 */
-	public static FloatMatrix std(FloatMatrix x, boolean flag, int dim) {
+	public static FloatMatrix subMatrixs(FloatMatrix matrix, int start, int end, boolean flag) {
 
-		int size;
-		float sum;// 和
-		float std;
-		FloatMatrix mu;// 平均值
-		FloatMatrix temp;// 临时变量
-		FloatMatrix matrix;// 计算结果
+		if(start < 0 || end < 0 ){
+			logger.error("");
+		}
+		
+		int rows = matrix.rows;
+		int columns = matrix.columns;
+		
+		if (flag == true) {
+			if (start > 0 && start <= rows && end > 0 ) {
 
-		if (dim == 1) {
-			size = x.columns;
-			mu = x.columnMeans();
-			matrix = new FloatMatrix(1, size);
-			for (int i = 0; i < size; i++) {
-				temp = x.getColumn(i).sub(mu.get(i));
-				sum = temp.transpose().mmul(temp).get(0);
-				std = (float) Math.sqrt(sum / (temp.rows - 1));
-				matrix.put(i, std);
 			}
+
 		} else {
-			size = x.rows;
-			mu = x.rowMeans();
-			matrix = new FloatMatrix(size, 1);
+
 		}
 
 		return matrix;
 	}
+
 }

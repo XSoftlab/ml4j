@@ -15,6 +15,7 @@ public class FeatureNormalize {
 	private FloatMatrix mu;// 平均值
 	private FloatMatrix sigma;// 标准差
 	private FloatMatrix temp;
+	private boolean intercept = true;
 
 	/**
 	 * 初始化
@@ -23,12 +24,29 @@ public class FeatureNormalize {
 	 *            要标准化的数据
 	 */
 	public FeatureNormalize(FloatMatrix data) {
+
+		this(data, true);
+	}
+
+	/**
+	 * 初始化
+	 * 
+	 * @param data
+	 *            要标准化的数据
+	 * @param intercept
+	 *            是否添加截距项
+	 */
+	public FeatureNormalize(FloatMatrix data, boolean intercept) {
 		super();
 		this.data = data;
+		this.intercept = intercept;
 
 		mu = data.columnMeans();
-		sigma = MatrixUtil.std(data, 1);
-		data_normal = new FloatMatrix(data.rows, data.columns);
+		sigma = MathUtil.std(data, 1);
+		if (intercept)
+			data_normal = new FloatMatrix(data.rows, data.columns + 1);
+		else
+			data_normal = new FloatMatrix(data.rows, data.columns);
 	}
 
 	/**
@@ -38,10 +56,17 @@ public class FeatureNormalize {
 	 */
 	public FloatMatrix normalize() {
 
-		// (data[i] - mu[i]) / sigma[i]
-		for (int i = 0; i < data.columns; i++) {
-			temp = data.getColumn(i).sub(mu.get(i));// data[i] - mu[i]
-			data_normal.putColumn(i, temp.div(sigma.get(i)));
+		if (intercept) {
+			data_normal.putColumn(0, FloatMatrix.ones(data_normal.rows));
+			for (int i = 0; i < data.columns; i++) {
+				temp = data.getColumn(i).sub(mu.get(i));// data[i] - mu[i]
+				data_normal.putColumn(i + 1, temp.div(sigma.get(i)));
+			}
+		} else {
+			for (int i = 0; i < data.columns; i++) {
+				temp = data.getColumn(i).sub(mu.get(i));// data[i] - mu[i]
+				data_normal.putColumn(i, temp.div(sigma.get(i)));
+			}
 		}
 
 		return data_normal;
