@@ -15,6 +15,6 @@ public class TestUtil {
 
 	public static void toc() {
 
-		logger.info("UseTime {} ms\n", (System.currentTimeMillis() - time));
+		logger.info("用时 {}s\n", (System.currentTimeMillis() - time) / 1000f);
 	}
 }
