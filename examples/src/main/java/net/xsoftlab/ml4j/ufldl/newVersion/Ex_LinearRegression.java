@@ -2,7 +2,7 @@ package net.xsoftlab.ml4j.ufldl.newVersion;
 
 import java.io.IOException;
 
-import net.xsoftlab.ml4j.regression.LinearRegression;
+import net.xsoftlab.ml4j.supervised.LinearRegression;
 import net.xsoftlab.ml4j.util.FeatureNormalize;
 import net.xsoftlab.ml4j.util.MathUtil;
 import net.xsoftlab.ml4j.util.MatrixUtil;

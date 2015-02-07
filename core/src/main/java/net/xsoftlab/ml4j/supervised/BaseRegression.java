@@ -1,4 +1,4 @@
-package net.xsoftlab.ml4j.regression;
+package net.xsoftlab.ml4j.supervised;
 
 import org.jblas.FloatMatrix;
 
