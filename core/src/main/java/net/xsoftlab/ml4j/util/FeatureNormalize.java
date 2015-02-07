@@ -50,6 +50,27 @@ public class FeatureNormalize {
 	}
 
 	/**
+	 * 初始化
+	 * 
+	 * @param data
+	 *            要标准化的数据
+	 * @param intercept
+	 *            是否添加截距项
+	 */
+	public FeatureNormalize(FloatMatrix data, FloatMatrix mu, FloatMatrix sigma, boolean intercept) {
+		super();
+		this.data = data;
+		this.mu = mu;
+		this.sigma = sigma;
+		this.intercept = intercept;
+
+		if (intercept)
+			data_normal = new FloatMatrix(data.rows, data.columns + 1);
+		else
+			data_normal = new FloatMatrix(data.rows, data.columns);
+	}
+
+	/**
 	 * 执行标准化
 	 * 
 	 * @return FloatMatrix

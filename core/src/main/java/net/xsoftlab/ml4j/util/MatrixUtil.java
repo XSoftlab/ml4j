@@ -75,6 +75,7 @@ public class MatrixUtil {
 		FloatMatrix matrix;
 		int numColumns = -1;
 		List<float[]> list = new ArrayList<float[]>();
+		// TODO reader.close?
 		BufferedReader reader = new BufferedReader(new InputStreamReader(filePath));
 
 		while ((line = reader.readLine()) != null) {
@@ -83,9 +84,7 @@ public class MatrixUtil {
 			if (numColumns < 0)
 				numColumns = data.length;
 			else if (data.length != numColumns) {
-				Ml4jException e = new Ml4jException("数据列大小不一致！");
-				logger.error("数据列大小不一致！", e);
-				throw e;
+				Ml4jException.logAndThrowException("数据列大小不一致");
 			}
 
 			list.add(convert(data, intercept));
@@ -185,9 +184,7 @@ public class MatrixUtil {
 			if (numColumns < 0)
 				numColumns = data.length;
 			else if (data.length != numColumns) {
-				Ml4jException e = new Ml4jException("数据列大小不一致！");
-				logger.error("数据列大小不一致！", e);
-				throw e;
+				Ml4jException.logAndThrowException("数据列大小不一致！");
 			}
 
 			resList = convertWithXY(data, intercept);
@@ -289,56 +286,6 @@ public class MatrixUtil {
 		Random random = new Random();
 		for (int i = matrix.rows; i > 1; i--)
 			matrix.swapRows(i - 1, random.nextInt(i));
-
-		return matrix;
-	}
-
-	/**
-	 * 矩阵截取 - 按行
-	 * 
-	 * @param matrix
-	 *            要截取的矩阵
-	 * @param start
-	 *            起始位置
-	 * @param end
-	 *            结束位置
-	 * @return 截取后的矩阵
-	 */
-	public static FloatMatrix subMatrixs(FloatMatrix matrix, int start, int end) {
-
-		return subMatrixs(matrix, start, end, true);
-	}
-
-	/**
-	 * 矩阵截取
-	 * 
-	 * @param matrix
-	 *            要截取的矩阵
-	 * @param start
-	 *            起始位置
-	 * @param end
-	 *            结束位置
-	 * @param flag
-	 *            true - 按行截取,false - 按列截取
-	 * @return 截取后的矩阵
-	 */
-	public static FloatMatrix subMatrixs(FloatMatrix matrix, int start, int end, boolean flag) {
-
-		if(start < 0 || end < 0 ){
-			logger.error("");
-		}
-		
-		int rows = matrix.rows;
-		int columns = matrix.columns;
-		
-		if (flag == true) {
-			if (start > 0 && start <= rows && end > 0 ) {
-
-			}
-
-		} else {
-
-		}
 
 		return matrix;
 	}

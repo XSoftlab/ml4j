@@ -80,9 +80,7 @@ public class MathUtil {
 	public static float std(FloatMatrix vector1, FloatMatrix vector2, boolean flag) {
 
 		if (!vector1.isVector() || !vector2.isVector()) {
-			Ml4jException e = new Ml4jException("参数必须是向量！");
-			logger.error("参数必须是向量！", e);
-			throw e;
+			Ml4jException.logAndThrowException("参数必须是向量！");
 		}
 
 		int n;// 数量，被除数
