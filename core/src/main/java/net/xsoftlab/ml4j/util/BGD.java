@@ -3,6 +3,8 @@ package net.xsoftlab.ml4j.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.xsoftlab.ml4j.supervised.BaseRegression;
+
 import org.jblas.FloatMatrix;
 
 /**
@@ -16,8 +18,11 @@ public class BGD {
 	private boolean flag = true;// 是否记录历记录
 	private List<FloatMatrix> history = null;// theta history
 
-	public BGD() {
+	private BaseRegression regression;
+
+	public BGD(BaseRegression regression) {
 		super();
+		this.regression = regression;
 		this.history = new ArrayList<FloatMatrix>();
 	}
 
@@ -27,9 +32,10 @@ public class BGD {
 	 * @param flag
 	 *            是否记录历史记录
 	 */
-	public BGD(boolean flag) {
+	public BGD(BaseRegression regression, boolean flag) {
 		super();
 		this.flag = flag;
+		this.regression = regression;
 		if (flag) {
 			this.history = new ArrayList<FloatMatrix>();
 		}
@@ -58,7 +64,7 @@ public class BGD {
 
 		for (int i = 0; i < iterations; i++) {
 
-			h = x.mmul(theta).sub(y);// x * theta - y
+			h = regression.function(theta).sub(y);
 			// x' * h * (alpha / m)
 			h1 = x.transpose().mmul(h).mul(alpha / m);
 			theta = theta.sub(h1);// theta = theta - h1

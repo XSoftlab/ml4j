@@ -109,4 +109,16 @@ public class MathUtil {
 
 		return std(vector1, vector2, true);
 	}
+	
+	/**
+	 * 计算数字的sigmod
+	 * 
+	 * @param z
+	 *            要计算的数字
+	 * @return 计算好的数字
+	 */
+	public static float sigmoid(float z) {
+
+		return (float) (1 / (1 + Math.exp(-z)));
+	}
 }

@@ -290,4 +290,45 @@ public class MatrixUtil {
 		return matrix;
 	}
 
+	/**
+	 * 计算矩阵的sigmoid
+	 * 
+	 * @param matrix
+	 *            要计算的矩阵
+	 * @return 计算好的矩阵
+	 */
+	public static FloatMatrix sigmoid(FloatMatrix matrix) {
+
+		int rows = matrix.rows;
+		int columns = matrix.columns;
+		FloatMatrix result = new FloatMatrix(rows, columns);
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				result.put(i, j, MathUtil.sigmoid(matrix.get(i, j)));
+			}
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 计算矩阵的log
+	 * 
+	 * @param matrix
+	 *            要计算的矩阵
+	 * @return 计算好的矩阵
+	 */
+	public static FloatMatrix log(FloatMatrix matrix) {
+
+		int rows = matrix.rows;
+		int columns = matrix.columns;
+		FloatMatrix result = new FloatMatrix(rows, columns);
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < columns; j++) {
+				result.put(i, j, (float) Math.log(matrix.get(i, j)));
+			}
+		}
+		
+		return result;
+	}
 }

@@ -3,18 +3,19 @@ package net.xsoftlab.ml4j.supervised;
 import java.util.List;
 
 import net.xsoftlab.ml4j.util.BGD;
+import net.xsoftlab.ml4j.util.MatrixUtil;
 
 import org.jblas.FloatMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 线性回归
+ * 逻辑回归
  * 
  * @author 王彦超
  * 
  */
-public class LinearRegression implements BaseRegression {
+public class LogisticRegression implements BaseRegression {
 
 	private FloatMatrix x;// 特征值
 	private FloatMatrix y;// 标签
@@ -41,7 +42,7 @@ public class LinearRegression implements BaseRegression {
 	 * @param iterations
 	 *            训练次数
 	 */
-	public LinearRegression(FloatMatrix x, FloatMatrix y, float alpha, int iterations) {
+	public LogisticRegression(FloatMatrix x, FloatMatrix y, float alpha, int iterations) {
 		super();
 
 		this.x = x;
@@ -59,7 +60,7 @@ public class LinearRegression implements BaseRegression {
 	 * @param printCost
 	 *            是否打印代价函数
 	 */
-	public LinearRegression(FloatMatrix x, FloatMatrix y, float alpha, int iterations, boolean printCost) {
+	public LogisticRegression(FloatMatrix x, FloatMatrix y, float alpha, int iterations, boolean printCost) {
 		this(x, y, alpha, iterations);
 
 		this.printCost = printCost;
@@ -67,17 +68,20 @@ public class LinearRegression implements BaseRegression {
 
 	@Override
 	public FloatMatrix function(FloatMatrix theta) {
-		
-		return x.mmul(theta);
+
+		return MatrixUtil.sigmoid(x.mmul(theta));
 	}
 
 	@Override
 	public float computeCost(FloatMatrix theta) {
 
-		FloatMatrix h = function(theta).sub(y); // x * theta - y
-		FloatMatrix h1 = h.transpose().mmul(h);// h' * h
+		FloatMatrix h = function(theta); // sigmoid(X * theta)
+		// -y' * log(h)
+		FloatMatrix h1 = y.neg().transpose().mmul(MatrixUtil.log(h));
+		// (1 - y)' * log(1 - h)
+		FloatMatrix h2 = (y.neg().add(1f)).transpose().mmul(MatrixUtil.log(h.neg().add(1f)));
 
-		return 1f / (2 * m) * h1.get(0);// 1/2m * h1
+		return 1f / m * (h1.get(0) - h2.get(0));// 1 / m * (h1 - h2)
 	}
 
 	@Override

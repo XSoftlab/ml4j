@@ -11,11 +11,19 @@ import org.jblas.FloatMatrix;
 public interface BaseRegression {
 
 	/**
+	 * hypothesis function
+	 * 
+	 * @param theta
+	 *            参数
+	 * @return h(x)
+	 */
+	public FloatMatrix function(FloatMatrix theta);
+
+	/**
 	 * 计算代价函数
 	 * 
 	 * @param theta
 	 *            参数
-	 * 
 	 * @return 代价值
 	 */
 	public float computeCost(FloatMatrix theta);
