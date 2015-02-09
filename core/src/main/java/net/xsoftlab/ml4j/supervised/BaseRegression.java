@@ -17,7 +17,18 @@ public interface BaseRegression {
 	 *            参数
 	 * @return h(x)
 	 */
-	public FloatMatrix function(FloatMatrix theta);
+	FloatMatrix function(FloatMatrix theta);
+	
+	/**
+	 * hypothesis function (SGD)
+	 * 
+	 * @param theta
+	 *            参数
+	 * @param i
+	 *            第几行
+	 * @return h(x)
+	 */
+	FloatMatrix function(FloatMatrix theta, int i);
 
 	/**
 	 * 计算代价函数

@@ -3,7 +3,7 @@ package net.xsoftlab.ml4j.coursera.ml.ex2;
 import java.io.IOException;
 
 import net.xsoftlab.ml4j.supervised.LogisticRegression;
-import net.xsoftlab.ml4j.util.MathUtil;
+import net.xsoftlab.ml4j.util.FeatureNormalize;
 import net.xsoftlab.ml4j.util.MatrixUtil;
 import net.xsoftlab.ml4j.util.TestUtil;
 
@@ -18,18 +18,22 @@ public class Ex2 extends TestUtil {
 		logger.info("加载数据...\n");
 
 		String path = System.getProperty("user.dir") + "/resources/coursera/ml/ex2/ex2data1.txt";
-		FloatMatrix[] matrixs = MatrixUtil.loadDataWithXY(path, ",", true);
+		FloatMatrix[] matrixs = MatrixUtil.loadDataWithXY(path, ",", false);
+
+		logger.info("训练集特征标准化...\n");
+		FeatureNormalize trainNormalize = new FeatureNormalize(matrixs[0], true);
+		FloatMatrix x = trainNormalize.normalize();
 
 		logger.info("执行训练...\n");
-		LogisticRegression lr = new LogisticRegression(matrixs[0], matrixs[1], 0.001f, 100000);
+		LogisticRegression lr = new LogisticRegression(x, matrixs[1], 10f, 100);
 		FloatMatrix theta = lr.train();
 
-		logger.info("计算均方差...\n");
-		float rms = MathUtil.std(matrixs[0].mmul(theta), matrixs[1]);
+		logger.info("准确度测算...\n");
+		x = x.mmul(theta);
+		float p = x.ge(0.5f).eq(matrixs[1]).mean() * 100;
 
-		logger.info("训练完成.\n \t theta = {} \n\t RMS = {}\n", new Object[] { theta, rms });
+		logger.info("训练完成.\n\t theta = {} \n\t准确度 = {}%", new Object[] { theta, p });
 
-		//TODO 随机梯度下降 继续完善ex2 观看coursera视频
 		toc();
 	}
 }

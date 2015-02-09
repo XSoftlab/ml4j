@@ -2,7 +2,7 @@ package net.xsoftlab.ml4j.supervised;
 
 import java.util.List;
 
-import net.xsoftlab.ml4j.util.BGD;
+import net.xsoftlab.ml4j.util.SGD;
 
 import org.jblas.FloatMatrix;
 import org.slf4j.Logger;
@@ -53,22 +53,16 @@ public class LinearRegression implements BaseRegression {
 		this.theta = FloatMatrix.rand(x.columns, 1);
 	}
 
-	/**
-	 * 初始化
-	 * 
-	 * @param printCost
-	 *            是否打印代价函数
-	 */
-	public LinearRegression(FloatMatrix x, FloatMatrix y, float alpha, int iterations, boolean printCost) {
-		this(x, y, alpha, iterations);
+	@Override
+	public FloatMatrix function(FloatMatrix theta) {
 
-		this.printCost = printCost;
+		return x.mmul(theta);
 	}
 
 	@Override
-	public FloatMatrix function(FloatMatrix theta) {
-		
-		return x.mmul(theta);
+	public FloatMatrix function(FloatMatrix theta, int i) {
+
+		return x.getRow(i).mmul(theta);
 	}
 
 	@Override
@@ -85,16 +79,20 @@ public class LinearRegression implements BaseRegression {
 
 		logger.info("执行梯度下降...\n");
 
-		BGD bgd = new BGD(this);
-		FloatMatrix result = bgd.compute(x, y, theta, alpha, iterations);
+		SGD sgd = new SGD(this, printCost);
+		FloatMatrix result = sgd.compute(x, y, theta, alpha, iterations);
 
 		if (printCost) {
-			List<FloatMatrix> history = bgd.getHistory();
+			List<FloatMatrix> history = sgd.getHistory();
 			for (FloatMatrix theta : history)
 				logger.debug("cost history: {}", this.computeCost(theta));
 		}
 
 		return result;
+	}
+
+	public void setPrintCost(boolean printCost) {
+		this.printCost = printCost;
 	}
 
 }

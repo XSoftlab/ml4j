@@ -20,8 +20,8 @@ public class Ex_LinearRegression extends TestUtil {
 		String path = System.getProperty("user.dir") + "/resources/ufldl/newVersion/housing.data";
 		FloatMatrix matrixs = MatrixUtil.loadData(path, "\\s+", false);
 
-		logger.info("打乱数据...\n");
-		matrixs = MatrixUtil.shuffle(matrixs);
+		/*logger.info("打乱数据...\n");
+		matrixs = MatrixUtil.shuffle(matrixs);*/
 
 		logger.info("分成训练集和测试集...\n");
 		FloatMatrix train = matrixs.getRange(0, 400, 0, matrixs.columns);

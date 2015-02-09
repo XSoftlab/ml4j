@@ -13,14 +13,14 @@ import org.jblas.FloatMatrix;
  * @author 王彦超
  *
  */
-public class BGD {
+public class SGD {
 
 	private boolean flag = true;// 是否记录历记录
 	private List<FloatMatrix> history = null;// theta history
 
 	private BaseRegression regression;
 
-	public BGD(BaseRegression regression) {
+	public SGD(BaseRegression regression) {
 		super();
 		this.regression = regression;
 		this.history = new ArrayList<FloatMatrix>();
@@ -32,7 +32,7 @@ public class BGD {
 	 * @param flag
 	 *            是否记录历史记录
 	 */
-	public BGD(BaseRegression regression, boolean flag) {
+	public SGD(BaseRegression regression, boolean flag) {
 		super();
 		this.flag = flag;
 		this.regression = regression;
@@ -68,6 +68,37 @@ public class BGD {
 			// x' * h * (alpha / m)
 			h1 = x.transpose().mmul(h).mul(alpha / m);
 			theta = theta.sub(h1);// theta = theta - h1
+
+			if (flag) {
+				history.add(theta);
+			}
+		}
+
+		return theta;
+	}
+
+	public FloatMatrix computeWithLambda(FloatMatrix x, FloatMatrix y, FloatMatrix theta, float lambda, float alpha,
+			int iterations) {
+
+		FloatMatrix h;
+		FloatMatrix h1;
+		FloatMatrix h2;
+		float temp;
+		float m = y.length;
+
+		for (int i = 0; i < iterations; i++) {
+
+			h = regression.function(theta).sub(y);
+			// x' * h * (alpha / m)
+			h1 = x.transpose().mmul(h);
+			h2 = h1.add(theta.mul(lambda)).mul(alpha / m);
+			
+			temp = theta.get(0);
+			theta = theta.sub(h2);// theta = theta - h2
+
+			if (lambda != 0) {
+				theta.put(0, temp * h1.mul(alpha / m).get(0));
+			}
 
 			if (flag) {
 				history.add(theta);
