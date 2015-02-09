@@ -307,10 +307,10 @@ public class MatrixUtil {
 				result.put(i, j, MathUtil.sigmoid(matrix.get(i, j)));
 			}
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * 计算矩阵的log
 	 * 
@@ -328,7 +328,52 @@ public class MatrixUtil {
 				result.put(i, j, (float) Math.log(matrix.get(i, j)));
 			}
 		}
-		
+
+		return result;
+	}
+
+	/**
+	 * 克隆矩阵
+	 * 
+	 * @param matrix
+	 *            要克隆的矩阵
+	 * @return 克隆好的矩阵
+	 */
+	public static FloatMatrix clone(FloatMatrix matrix) {
+
+		int rows = matrix.rows;
+		int columns = matrix.columns;
+		FloatMatrix result = new FloatMatrix(rows, columns);
+		for (int i = 0; i < rows; i++) {
+			result.putRow(i, matrix.getRow(i));
+		}
+
+		return result;
+	}
+
+	/**
+	 * 计算向量的开方
+	 * 
+	 * @param vector
+	 *            要计算的向量
+	 * @return 计算好的向量
+	 */
+	public static FloatMatrix pow(FloatMatrix vector, int time) {
+
+		if (!vector.isVector())
+			Ml4jException.logAndThrowException("参数vector必须是向量！");
+		else if (time < 0) {
+			Ml4jException.logAndThrowException("参数time必须是大于或等于0的整数！");
+		}
+
+		if (time == 0)
+			return FloatMatrix.ones(vector.rows, vector.columns);
+
+		FloatMatrix result = clone(vector);
+		for (int i = 1; i < time; i++) {
+			result.muli(vector);
+		}
+
 		return result;
 	}
 }

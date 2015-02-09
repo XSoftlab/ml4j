@@ -90,9 +90,11 @@ public class LogisticRegression implements BaseRegression {
 
 		FloatMatrix theta1 = theta.getRange(1, theta.length);
 		float cost = 1f / m * (h1.get(0) - h2.get(0));// 1 / m * (h1 - h2)
-		if (lambda != 0)
-			cost += lambda / (2 * m) * theta1.transpose().mmul(theta1).get(0);
-
+		if (lambda != 0){
+			float cost1 = lambda / (2 * m) * theta1.transpose().mmul(theta1).get(0);
+			cost += cost1;
+		}
+		
 		return cost;
 	}
 
