@@ -84,7 +84,6 @@ public class SGD {
 		FloatMatrix h1;
 		FloatMatrix h2;
 		FloatMatrix h3;
-		float temp;
 		float m = y.length;
 
 		for (int i = 0; i < iterations; i++) {
@@ -93,15 +92,13 @@ public class SGD {
 			// x' * h * (alpha / m)
 			h1 = x.transpose().mmul(h);
 			h2 = h1.add(theta.mul(lambda)).mul(alpha / m);
-			
-			temp = theta.get(0);
-			h3 = x.getColumn(0).transpose().mmul(h);
-					
-			theta = theta.sub(h2);// theta = theta - h2
 
 			if (lambda != 0) {
-				theta.put(0, temp * h3.mul(alpha / m).get(0));
+				h3 = x.getColumn(0).transpose().mmul(h);
+				h2.put(0, h3.mul(alpha / m).get(0));
 			}
+			
+			theta = theta.sub(h2);// theta = theta - h2
 
 			if (flag) {
 				history.add(theta);
