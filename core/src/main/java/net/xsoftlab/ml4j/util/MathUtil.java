@@ -119,6 +119,6 @@ public class MathUtil {
 	 */
 	public static float sigmoid(float z) {
 
-		return (float) (1 / (1 + Math.exp(-z)));
+		return (float) (1f / (1f + Math.exp(-z)));
 	}
 }

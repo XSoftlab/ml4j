@@ -26,9 +26,13 @@ public class Ex2_reg extends TestUtil {
 		FloatMatrix theta = lr.train();
 
 		logger.info("准确度测算...\n");
-		float p = x.mmul(theta).ge(0.5f).eq(matrixs[1]).mean() * 100;
+		
+		System.out.println(x.mmul(theta));
+		/*FloatMatrix p = MatrixUtil.sigmoid();
+		FloatMatrix p1 = p.ge(0.5f).eq(matrixs[1]);
+		float p2 = p1.mean() * 100;*/
 
-		logger.info("训练完成.\n\t theta = {} \n\t 准确度 = {}%", new Object[] { theta, p });
+		//logger.info("训练完成.\n\t theta = {} \n\t 准确度 = {}%", new Object[] { theta, p2 });
 
 		toc();
 	}
