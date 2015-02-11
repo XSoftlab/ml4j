@@ -1,4 +1,4 @@
-package net.xsoftlab.ml4j.ufldl.newVersion;
+package net.xsoftlab.ml4j.ufldl.newVersion.ex1;
 
 import java.io.IOException;
 
@@ -17,11 +17,11 @@ public class Ex_LinearRegression extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		String path = System.getProperty("user.dir") + "/resources/ufldl/newVersion/housing.data";
+		String path = System.getProperty("user.dir") + "/resources/ufldl/newVersion/ex1/housing.data";
 		FloatMatrix matrixs = MatrixUtil.loadData(path, "\\s+", false);
 
-		/*logger.info("打乱数据...\n");
-		matrixs = MatrixUtil.shuffle(matrixs);*/
+		logger.info("打乱数据...\n");
+		matrixs = MatrixUtil.shuffle(matrixs);
 
 		logger.info("分成训练集和测试集...\n");
 		FloatMatrix train = matrixs.getRange(0, 400, 0, matrixs.columns);

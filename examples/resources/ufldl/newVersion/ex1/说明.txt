@@ -1,0 +1,2 @@
+说明：由于文件过大，请自行下载mnist手写识别数据并放到当前目录。
+地址：http://yann.lecun.com/exdb/mnist/
