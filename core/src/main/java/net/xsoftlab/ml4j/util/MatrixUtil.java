@@ -1,10 +1,14 @@
 package net.xsoftlab.ml4j.util;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +30,25 @@ import org.slf4j.LoggerFactory;
 public class MatrixUtil {
 
 	public static Logger logger = LoggerFactory.getLogger(MatrixUtil.class);
+
+	/**
+	 * 将数据保存到文件
+	 * 
+	 * @param fileName
+	 *            文件路径
+	 */
+	public static void saveData(FloatMatrix matrix, String fileName) throws IOException {
+
+		File file = new File(fileName); // 创建文件
+		Writer writer = null;
+		try {
+			writer = new OutputStreamWriter(new FileOutputStream(file)); // 打开文件输出流
+			writer.write(matrix.toString()); // 写入文件
+		} finally {
+			if (writer != null)
+				writer.close();
+		}
+	}
 
 	/**
 	 * 将字符串数组转化为float数组
@@ -67,6 +90,7 @@ public class MatrixUtil {
 	 *            是否添加截距项
 	 * 
 	 * @return 数据矩阵
+	 * @throws IOException
 	 */
 	public static FloatMatrix loadData(InputStream filePath, String split, boolean intercept) throws IOException {
 
@@ -75,19 +99,24 @@ public class MatrixUtil {
 		FloatMatrix matrix;
 		int numColumns = -1;
 		List<float[]> list = new ArrayList<float[]>();
-		// TODO reader.close?
-		BufferedReader reader = new BufferedReader(new InputStreamReader(filePath));
 
-		while ((line = reader.readLine()) != null) {
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(filePath));
+			while ((line = reader.readLine()) != null) {
 
-			data = line.trim().split(split);
-			if (numColumns < 0)
-				numColumns = data.length;
-			else if (data.length != numColumns) {
-				Ml4jException.logAndThrowException("数据列大小不一致");
+				data = line.trim().split(split);
+				if (numColumns < 0)
+					numColumns = data.length;
+				else if (data.length != numColumns) {
+					Ml4jException.logAndThrowException("数据列大小不一致");
+				}
+
+				list.add(convert(data, intercept));
 			}
-
-			list.add(convert(data, intercept));
+		} finally {
+			if (reader != null)
+				reader.close();
 		}
 
 		matrix = new FloatMatrix(list.size(), numColumns);
@@ -165,6 +194,7 @@ public class MatrixUtil {
 	 *            是否添加截距项
 	 * 
 	 * @return 数据矩阵数组
+	 * @throws IOException
 	 */
 	public static FloatMatrix[] loadDataWithXY(InputStream filePath, String split, boolean intercept)
 			throws IOException {
@@ -176,37 +206,43 @@ public class MatrixUtil {
 		List<float[]> list;
 		List<float[]> resList;
 		Map<String, List<float[]>> map = new HashMap<String, List<float[]>>();
-		BufferedReader reader = new BufferedReader(new InputStreamReader(filePath));
 
-		while ((line = reader.readLine()) != null) {
+		BufferedReader reader = null;
+		try {
+			reader = new BufferedReader(new InputStreamReader(filePath));
+			while ((line = reader.readLine()) != null) {
 
-			data = line.trim().split(split);
-			if (numColumns < 0)
-				numColumns = data.length;
-			else if (data.length != numColumns) {
-				Ml4jException.logAndThrowException("数据列大小不一致！");
+				data = line.trim().split(split);
+				if (numColumns < 0)
+					numColumns = data.length;
+				else if (data.length != numColumns) {
+					Ml4jException.logAndThrowException("数据列大小不一致！");
+				}
+
+				resList = convertWithXY(data, intercept);
+				if (map.containsKey("0")) {
+					list = map.get("0");
+					list.add(resList.get(0));
+					map.put("0", list);
+				} else {
+					list = new ArrayList<float[]>();
+					list.add(resList.get(0));
+					map.put("0", list);
+				}
+
+				if (map.containsKey("1")) {
+					list = map.get("1");
+					list.add(resList.get(1));
+					map.put("1", list);
+				} else {
+					list = new ArrayList<float[]>();
+					list.add(resList.get(1));
+					map.put("1", list);
+				}
 			}
-
-			resList = convertWithXY(data, intercept);
-			if (map.containsKey("0")) {
-				list = map.get("0");
-				list.add(resList.get(0));
-				map.put("0", list);
-			} else {
-				list = new ArrayList<float[]>();
-				list.add(resList.get(0));
-				map.put("0", list);
-			}
-
-			if (map.containsKey("1")) {
-				list = map.get("1");
-				list.add(resList.get(1));
-				map.put("1", list);
-			} else {
-				list = new ArrayList<float[]>();
-				list.add(resList.get(1));
-				map.put("1", list);
-			}
+		} finally {
+			if (reader != null)
+				reader.close();
 		}
 
 		numColumns = intercept ? numColumns : numColumns - 1;

@@ -21,7 +21,7 @@ public class MapFeature {
 		}
 
 		out = new FloatMatrix(X1.rows, list.size() + 1);
-		out.putRow(0, FloatMatrix.ones(X1.length));
+		out.putColumn(0, FloatMatrix.ones(X1.length));
 		for (int i = 0; i < list.size(); i++) {
 			out.putColumn(i + 1, list.get(i));
 		}

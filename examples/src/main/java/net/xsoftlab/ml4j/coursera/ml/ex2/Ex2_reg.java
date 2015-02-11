@@ -22,17 +22,13 @@ public class Ex2_reg extends TestUtil {
 		FloatMatrix x = MapFeature.mapFeature(matrixs[0].getColumn(0), matrixs[0].getColumn(1));
 
 		logger.info("执行训练...\n");
-		LogisticRegression lr = new LogisticRegression(x, matrixs[1], 30f, 10000, 0.0001f);
+		LogisticRegression lr = new LogisticRegression(x, matrixs[1], 1f, 400, 1);
 		FloatMatrix theta = lr.train();
 
 		logger.info("准确度测算...\n");
-		
-		System.out.println(x.mmul(theta));
-		/*FloatMatrix p = MatrixUtil.sigmoid();
-		FloatMatrix p1 = p.ge(0.5f).eq(matrixs[1]);
-		float p2 = p1.mean() * 100;*/
+		float p = MatrixUtil.sigmoid(x.mmul(theta)).ge(0.5f).eq(matrixs[1]).mean() * 100;
 
-		//logger.info("训练完成.\n\t theta = {} \n\t 准确度 = {}%", new Object[] { theta, p2 });
+		logger.info("训练完成.\n\t theta = {} \n\t 准确度 = {}%", new Object[] { theta, p });
 
 		toc();
 	}
