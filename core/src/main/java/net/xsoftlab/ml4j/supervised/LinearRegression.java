@@ -2,7 +2,7 @@ package net.xsoftlab.ml4j.supervised;
 
 import java.util.List;
 
-import net.xsoftlab.ml4j.util.SGD;
+import net.xsoftlab.ml4j.util.GradientDescent;
 
 import org.jblas.FloatMatrix;
 import org.slf4j.Logger;
@@ -20,6 +20,7 @@ public class LinearRegression implements BaseRegression {
 	private FloatMatrix y;// 标签
 	private FloatMatrix theta;// 参数
 	private float alpha = 0.01f;// 训练速度
+	private float lambda = 0f;// 正则化系数
 	private int iterations;// 训练次数
 
 	private int m;// 样本数量
@@ -54,21 +55,25 @@ public class LinearRegression implements BaseRegression {
 	}
 
 	@Override
-	public FloatMatrix function(FloatMatrix theta) {
+	public FloatMatrix computeGradient(FloatMatrix theta) {
 
-		return x.mmul(theta);
-	}
+		FloatMatrix h = x.mmul(theta).sub(y); // x * theta - y
+		// x' * h * (alpha / m)
+		FloatMatrix h1 = x.transpose().mmul(h);
+		FloatMatrix h2 = h1.add(theta.mul(lambda)).mul(alpha / m);
 
-	@Override
-	public FloatMatrix function(FloatMatrix theta, int i) {
+		if (lambda != 0) {
+			FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
+			h2.put(0, h3.mul(alpha / m).get(0));
+		}
 
-		return x.getRow(i).mmul(theta);
+		return h2;
 	}
 
 	@Override
 	public float computeCost(FloatMatrix theta) {
 
-		FloatMatrix h = function(theta).sub(y); // x * theta - y
+		FloatMatrix h = x.mmul(theta).sub(y); // x * theta - y
 		FloatMatrix h1 = h.transpose().mmul(h);// h' * h
 
 		return 1f / (2 * m) * h1.get(0);// 1/2m * h1
@@ -79,11 +84,11 @@ public class LinearRegression implements BaseRegression {
 
 		logger.info("执行梯度下降...\n");
 
-		SGD sgd = new SGD(this, printCost);
-		FloatMatrix result = sgd.compute(x, y, theta, alpha, iterations);
+		GradientDescent gd = new GradientDescent(this, printCost);
+		FloatMatrix result = gd.compute(theta, iterations);
 
 		if (printCost) {
-			List<FloatMatrix> history = sgd.getHistory();
+			List<FloatMatrix> history = gd.getHistory();
 			for (FloatMatrix theta : history)
 				logger.debug("cost history: {}", this.computeCost(theta));
 		}

@@ -11,24 +11,13 @@ import org.jblas.FloatMatrix;
 public interface BaseRegression {
 
 	/**
-	 * hypothesis function
+	 * 计算梯度
 	 * 
 	 * @param theta
 	 *            参数
-	 * @return h(x)
+	 * @return theta
 	 */
-	FloatMatrix function(FloatMatrix theta);
-	
-	/**
-	 * hypothesis function (SGD)
-	 * 
-	 * @param theta
-	 *            参数
-	 * @param i
-	 *            第几行
-	 * @return h(x)
-	 */
-	FloatMatrix function(FloatMatrix theta, int i);
+	FloatMatrix computeGradient(FloatMatrix theta);
 
 	/**
 	 * 计算代价函数

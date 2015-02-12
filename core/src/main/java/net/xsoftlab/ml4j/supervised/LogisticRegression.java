@@ -3,7 +3,7 @@ package net.xsoftlab.ml4j.supervised;
 import java.util.List;
 
 import net.xsoftlab.ml4j.util.MatrixUtil;
-import net.xsoftlab.ml4j.util.SGD;
+import net.xsoftlab.ml4j.util.GradientDescent;
 
 import org.jblas.FloatMatrix;
 import org.slf4j.Logger;
@@ -68,21 +68,27 @@ public class LogisticRegression implements BaseRegression {
 	}
 
 	@Override
-	public FloatMatrix function(FloatMatrix theta) {
+	public FloatMatrix computeGradient(FloatMatrix theta) {
 
-		return MatrixUtil.sigmoid(x.mmul(theta));
-	}
+		// sigmoid(X * theta)
+		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta)).sub(y);
+		// x' * h * (alpha / m)
+		FloatMatrix h1 = x.transpose().mmul(h);
+		FloatMatrix h2 = h1.add(theta.mul(lambda)).mul(alpha / m);
 
-	@Override
-	public FloatMatrix function(FloatMatrix theta, int i) {
+		if (lambda != 0) {
+			FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
+			h2.put(0, h3.mul(alpha / m).get(0));
+		}
 
-		return MatrixUtil.sigmoid(x.getRow(i).mmul(theta));
+		return h2;
 	}
 
 	@Override
 	public float computeCost(FloatMatrix theta) {
 
-		FloatMatrix h = function(theta); // sigmoid(X * theta)
+		// sigmoid(X * theta)
+		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta));
 		// -y' * log(h)
 		FloatMatrix h1 = y.neg().transpose().mmul(MatrixUtil.log(h));
 		// (1 - y)' * log(1 - h)
@@ -90,11 +96,11 @@ public class LogisticRegression implements BaseRegression {
 
 		FloatMatrix theta1 = theta.getRange(1, theta.length);
 		float cost = 1f / m * (h1.get(0) - h2.get(0));// 1 / m * (h1 - h2)
-		if (lambda != 0){
+		if (lambda != 0) {
 			float cost1 = lambda / (2 * m) * theta1.transpose().mmul(theta1).get(0);
 			cost += cost1;
 		}
-		
+
 		return cost;
 	}
 
@@ -103,11 +109,11 @@ public class LogisticRegression implements BaseRegression {
 
 		logger.info("执行梯度下降...\n");
 
-		SGD sgd = new SGD(this, printCost);
-		FloatMatrix result = sgd.computeWithLambda(x, y, theta, lambda, alpha, iterations);
+		GradientDescent gd = new GradientDescent(this, printCost);
+		FloatMatrix result = gd.compute(theta, iterations);
 
 		if (printCost) {
-			List<FloatMatrix> history = sgd.getHistory();
+			List<FloatMatrix> history = gd.getHistory();
 			for (FloatMatrix theta : history)
 				logger.debug("cost history: {}", this.computeCost(theta));
 		}
