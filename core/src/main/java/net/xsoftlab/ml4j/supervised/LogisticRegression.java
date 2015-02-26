@@ -25,7 +25,6 @@ public class LogisticRegression implements BaseRegression {
 	private int iterations;// 训练次数
 
 	private int m;// 样本数量
-	private int index = 0;// 随机梯度下降索引
 	private boolean printCost = true;// 是否打印代价函数
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -71,16 +70,14 @@ public class LogisticRegression implements BaseRegression {
 	@Override
 	public FloatMatrix computeGradient(FloatMatrix theta) {
 
-		int index = this.index++ % m;
-		FloatMatrix x1 = x.getRow(index);
 		// sigmoid(X * theta)
-		FloatMatrix h = MatrixUtil.sigmoid(x1.mmul(theta)).sub(y.getRow(index));
+		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta)).sub(y);
 		// x' * h * (alpha / m)
-		FloatMatrix h1 = x1.transpose().mmul(h);
+		FloatMatrix h1 = x.transpose().mmul(h);
 		FloatMatrix h2 = h1.add(theta.mul(lambda)).mul(alpha / m);
 
 		if (lambda != 0) {
-			FloatMatrix h3 = x1.getColumn(0).transpose().mmul(h);
+			FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
 			h2.put(0, h3.mul(alpha / m).get(0));
 		}
 
@@ -93,6 +90,8 @@ public class LogisticRegression implements BaseRegression {
 		// sigmoid(X * theta)
 		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta));
 		// -y' * log(h)
+		System.out.println(y.neg());
+		System.out.println(MatrixUtil.log(h));
 		FloatMatrix h1 = y.neg().transpose().mmul(MatrixUtil.log(h));
 		// (1 - y)' * log(1 - h)
 		FloatMatrix h2 = (y.neg().add(1f)).transpose().mmul(MatrixUtil.log(h.neg().add(1f)));
