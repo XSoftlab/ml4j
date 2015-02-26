@@ -81,12 +81,18 @@ public class FeatureNormalize {
 			data_normal.putColumn(0, FloatMatrix.ones(data_normal.rows));
 			for (int i = 0; i < data.columns; i++) {
 				temp = data.getColumn(i).sub(mu.get(i));// data[i] - mu[i]
-				data_normal.putColumn(i + 1, temp.div(sigma.get(i)));
+				if (sigma.get(i) == 0) {
+					data_normal.putColumn(i + 1, temp);
+				} else
+					data_normal.putColumn(i + 1, temp.div(sigma.get(i)));
 			}
 		} else {
 			for (int i = 0; i < data.columns; i++) {
 				temp = data.getColumn(i).sub(mu.get(i));// data[i] - mu[i]
-				data_normal.putColumn(i, temp.div(sigma.get(i)));
+				if (sigma.get(i) == 0) {
+					data_normal.putColumn(i + 1, temp);
+				} else
+					data_normal.putColumn(i + 1, temp.div(sigma.get(i)));
 			}
 		}
 

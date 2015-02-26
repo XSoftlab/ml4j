@@ -9,6 +9,8 @@ public class TestUtil {
 
 	public static Logger logger = LoggerFactory.getLogger(TestUtil.class);
 
+	public static final String RESOURCES_PATH = System.getProperty("user.dir") + "/resources";
+
 	public static void tic() {
 		time = System.currentTimeMillis();
 	}

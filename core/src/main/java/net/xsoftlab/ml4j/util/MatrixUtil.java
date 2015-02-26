@@ -301,10 +301,66 @@ public class MatrixUtil {
 	 */
 	public static FloatMatrix addIntercept(FloatMatrix matrix) {
 
-		FloatMatrix result = new FloatMatrix(matrix.rows, matrix.columns + 1);
-		result.putColumn(0, FloatMatrix.ones(matrix.rows));
-		for (int i = 0; i < matrix.columns; i++) {
-			result.putColumn(i + 1, matrix.getColumn(i));
+		return add(FloatMatrix.ones(matrix.rows), matrix, 2);
+	}
+
+	/**
+	 * 矩阵合并 (按行)
+	 * 
+	 * @param matrix
+	 *            原始矩阵
+	 * @param additional
+	 *            要合并的矩阵
+	 * @return 合并后的矩阵
+	 */
+	public static FloatMatrix add(FloatMatrix matrix, FloatMatrix additional) {
+
+		return add(matrix, additional, 1);
+	}
+
+	/**
+	 * 矩阵合并
+	 * 
+	 * @param matrix
+	 *            原始矩阵
+	 * @param additional
+	 *            要合并的矩阵
+	 * @param dim
+	 *            1/按行合并 2/按列合并
+	 * @return 合并后的矩阵
+	 */
+	public static FloatMatrix add(FloatMatrix matrix, FloatMatrix additional, int dim) {
+
+		int rows = matrix.rows;
+		int columns = matrix.columns;
+
+		int aRows = additional.rows;
+		int aColumns = additional.columns;
+
+		FloatMatrix result = null;
+
+		if (dim == 1) {
+			if (columns != aColumns)
+				Ml4jException.logAndThrowException("要添加的矩阵与原矩阵列数不符。");
+
+			result = new FloatMatrix(rows + aRows, columns);
+			for (int i = 0; i < rows; i++) {
+				result.putRow(i, matrix.getRow(i));
+			}
+			for (int i = 0; i < aRows; i++) {
+				result.putRow(i + rows, additional.getRow(i));
+			}
+		} else if (dim == 2) {
+			if (rows != aRows)
+				Ml4jException.logAndThrowException("要添加的矩阵与原矩阵行数不符。");
+
+			result = new FloatMatrix(rows, columns + aColumns);
+			for (int i = 0; i < columns; i++) {
+				result.putColumn(i, matrix.getColumn(i));
+			}
+			for (int i = 0; i < aColumns; i++) {
+				result.putColumn(i + columns, additional.getColumn(i));
+			}
 		}
 
 		return result;
@@ -319,11 +375,33 @@ public class MatrixUtil {
 	 */
 	public static FloatMatrix shuffle(FloatMatrix matrix) {
 
-		Random random = new Random();
-		for (int i = matrix.rows; i > 1; i--)
-			matrix.swapRows(i - 1, random.nextInt(i));
+		int[] rindices = MatrixUtil.randperm(matrix.rows);
+		return matrix.getRows(rindices);
+	}
 
-		return matrix;
+	/**
+	 * 随机打乱一组数字
+	 * 
+	 * @param number
+	 *            要打乱的数字范围（从0开始）
+	 * @return 打乱好的数组
+	 */
+	public static int[] randperm(int number) {
+
+		int[] array = new int[number];
+		for (int i = 0; i < number; i++)
+			array[i] = i;
+
+		int index, temp;
+		Random random = new Random();
+		for (int i = number; i > 1; i--) {
+			index = random.nextInt(i);
+			temp = array[i - 1];
+			array[i - 1] = array[index];
+			array[index] = temp;
+		}
+
+		return array;
 	}
 
 	/**

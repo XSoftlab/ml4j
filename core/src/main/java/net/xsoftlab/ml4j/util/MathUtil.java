@@ -45,7 +45,7 @@ public class MathUtil {
 
 		int size;
 		FloatMatrix mu;// 平均值
-		FloatMatrix std;// 计算结果
+		FloatMatrix std = null;// 计算结果
 
 		if (dim == 1) {
 			size = x.columns;
@@ -54,7 +54,7 @@ public class MathUtil {
 			for (int i = 0; i < size; i++) {
 				std.put(i, std(x.getColumn(i), mu.get(new int[] { i }), flag));
 			}
-		} else {
+		} else if (dim == 2) {
 			size = x.rows;
 			mu = x.rowMeans();
 			std = new FloatMatrix(size, 1);
@@ -109,7 +109,7 @@ public class MathUtil {
 
 		return std(vector1, vector2, true);
 	}
-	
+
 	/**
 	 * 计算数字的sigmod
 	 * 

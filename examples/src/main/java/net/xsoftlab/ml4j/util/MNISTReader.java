@@ -22,14 +22,6 @@ import org.jblas.FloatMatrix;
  */
 public class MNISTReader extends TestUtil {
 
-	public static void main(String[] args) throws Exception {
-
-		tic();
-		// loadMNISTImages("d:/train-images-idx3-ubyte");
-		loadMNISTLabel("d:/train-labels-idx1-ubyte");
-		toc();
-	}
-
 	public static FloatMatrix loadMNISTImages(String filePath) throws IOException {
 
 		FileInputStream in = null;
@@ -72,7 +64,9 @@ public class MNISTReader extends TestUtil {
 				in.close();
 		}
 
-		return matrix;
+		// ImagePanel.show(matrix.getRow(0).data, 28, 28, 1);
+		// Convert to double and rescale to [0,1]
+		return matrix.div(255);
 	}
 
 	public static FloatMatrix loadMNISTLabel(String filePath) throws IOException {
@@ -104,7 +98,7 @@ public class MNISTReader extends TestUtil {
 			while (byteBuffer.hasRemaining()) {
 				buffer[j++] = byteBuffer.get() & 0xff;
 			}
-			matrix.putRow(0, new FloatMatrix(buffer));
+			matrix.putColumn(0, new FloatMatrix(buffer));
 		} finally {
 			if (in != null)
 				in.close();

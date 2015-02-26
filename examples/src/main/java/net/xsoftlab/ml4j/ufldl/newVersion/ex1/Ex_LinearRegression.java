@@ -17,18 +17,18 @@ public class Ex_LinearRegression extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		String path = System.getProperty("user.dir") + "/resources/ufldl/newVersion/ex1/housing.data";
-		FloatMatrix matrixs = MatrixUtil.loadData(path, "\\s+", false);
+		String path = RESOURCES_PATH + "/ufldl/newVersion/ex1/housing.data";
+		FloatMatrix matrix = MatrixUtil.loadData(path, "\\s+", false);
 
 		logger.info("打乱数据...\n");
-		matrixs = MatrixUtil.shuffle(matrixs);
+		matrix = MatrixUtil.shuffle(matrix);
 
 		logger.info("分成训练集和测试集...\n");
-		FloatMatrix train = matrixs.getRange(0, 400, 0, matrixs.columns);
+		FloatMatrix train = matrix.getRange(0, 400, 0, matrix.columns);
 		FloatMatrix train_x = train.getRange(0, train.rows, 0, train.columns - 1);
 		FloatMatrix train_y = train.getRange(0, train.rows, train.columns - 1, train.columns);
 
-		FloatMatrix test = matrixs.getRange(400, matrixs.rows, 0, matrixs.columns);
+		FloatMatrix test = matrix.getRange(400, matrix.rows, 0, matrix.columns);
 		FloatMatrix test_x = train.getRange(0, test.rows, 0, test.columns - 1);
 		FloatMatrix test_y = train.getRange(0, test.rows, test.columns - 1, test.columns);
 
