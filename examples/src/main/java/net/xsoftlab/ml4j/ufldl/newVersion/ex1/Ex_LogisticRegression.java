@@ -21,7 +21,7 @@ public class Ex_LogisticRegression extends TestUtil {
 		FloatMatrix[] test = map.get("test");
 
 		logger.info("执行训练...\n");
-		LogisticRegression lr = new LogisticRegression(train[0], train[1], 15f, 200, 0);
+		LogisticRegression lr = new LogisticRegression(train[0], train[1], 15f, 350, 0);
 		lr.setPrintCost(false);
 		FloatMatrix theta = lr.train();
 
