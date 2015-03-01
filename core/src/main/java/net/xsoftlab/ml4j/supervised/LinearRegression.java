@@ -60,14 +60,14 @@ public class LinearRegression implements BaseRegression {
 		FloatMatrix h = x.mmul(theta).sub(y); // x * theta - y
 		// x' * h * (alpha / m)
 		FloatMatrix h1 = x.transpose().mmul(h);
-		FloatMatrix h2 = h1.add(theta.mul(lambda)).mul(alpha / m);
+		FloatMatrix h2 = h1.add(theta.mul(lambda));
 
 		if (lambda != 0) {
 			FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
-			h2.put(0, h3.mul(alpha / m).get(0));
+			h2.put(0, h3.get(0));
 		}
 
-		return h2;
+		return h2.mul(alpha / m);
 	}
 
 	@Override
@@ -75,8 +75,15 @@ public class LinearRegression implements BaseRegression {
 
 		FloatMatrix h = x.mmul(theta).sub(y); // x * theta - y
 		FloatMatrix h1 = h.transpose().mmul(h);// h' * h
+		float cost = h1.get(0);
 
-		return 1f / (2 * m) * h1.get(0);// 1/2m * h1
+		FloatMatrix theta1 = theta.getRange(1, theta.length);
+		if (lambda != 0) {
+			float cost1 = lambda * theta1.transpose().mmul(theta1).get(0);
+			cost += cost1;
+		}
+
+		return 1f / (2 * m) * cost;
 	}
 
 	@Override

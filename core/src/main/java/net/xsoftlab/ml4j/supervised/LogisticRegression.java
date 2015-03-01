@@ -74,14 +74,14 @@ public class LogisticRegression implements BaseRegression {
 		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta)).sub(y);
 		// x' * h * (alpha / m)
 		FloatMatrix h1 = x.transpose().mmul(h);
-		FloatMatrix h2 = h1.add(theta.mul(lambda)).mul(alpha / m);
+		FloatMatrix h2 = h1.add(theta.mul(lambda));
 
 		if (lambda != 0) {
 			FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
-			h2.put(0, h3.mul(alpha / m).get(0));
+			h2.put(0, h3.get(0));
 		}
 
-		return h2;
+		return h2.mul(alpha / m);
 	}
 
 	@Override
@@ -90,14 +90,12 @@ public class LogisticRegression implements BaseRegression {
 		// sigmoid(X * theta)
 		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta));
 		// -y' * log(h)
-		System.out.println(y.neg());
-		System.out.println(MatrixUtil.log(h));
 		FloatMatrix h1 = y.neg().transpose().mmul(MatrixUtil.log(h));
 		// (1 - y)' * log(1 - h)
 		FloatMatrix h2 = (y.neg().add(1f)).transpose().mmul(MatrixUtil.log(h.neg().add(1f)));
+		float cost = 1f / m * (h1.get(0) - h2.get(0));// 1 / m * (h1 - h2)
 
 		FloatMatrix theta1 = theta.getRange(1, theta.length);
-		float cost = 1f / m * (h1.get(0) - h2.get(0));// 1 / m * (h1 - h2)
 		if (lambda != 0) {
 			float cost1 = lambda / (2 * m) * theta1.transpose().mmul(theta1).get(0);
 			cost += cost1;
