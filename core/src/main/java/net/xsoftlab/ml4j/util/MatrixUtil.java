@@ -436,10 +436,15 @@ public class MatrixUtil {
 
 		int rows = matrix.rows;
 		int columns = matrix.columns;
+		Double log = 0d;
 		FloatMatrix result = new FloatMatrix(rows, columns);
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < columns; j++) {
-				result.put(i, j, (float) Math.log(matrix.get(i, j)));
+				log = Math.log(matrix.get(i, j));
+				if (log.isInfinite() && log < 0)
+					result.put(i, j, 0f);
+				else
+					result.put(i, j, log.floatValue());
 			}
 		}
 

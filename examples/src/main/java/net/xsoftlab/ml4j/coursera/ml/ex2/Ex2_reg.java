@@ -2,7 +2,9 @@ package net.xsoftlab.ml4j.coursera.ml.ex2;
 
 import java.io.IOException;
 
-import net.xsoftlab.ml4j.supervised.LogisticRegression;
+import net.xsoftlab.ml4j.minfunc.GradientDescent;
+import net.xsoftlab.ml4j.model.BaseModel;
+import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
 import net.xsoftlab.ml4j.util.MatrixUtil;
 import net.xsoftlab.ml4j.util.TestUtil;
 
@@ -21,9 +23,12 @@ public class Ex2_reg extends TestUtil {
 		logger.info("参数处理...\n");
 		FloatMatrix x = MapFeature.mapFeature(matrixs[0].getColumn(0), matrixs[0].getColumn(1));
 
-		logger.info("执行训练...\n");
-		LogisticRegression lr = new LogisticRegression(x, matrixs[1], 1f, 400, 1);
-		FloatMatrix theta = lr.train();
+		logger.info("模型初始化...\n");
+		BaseModel model = new LogisticRegression(x, matrixs[1],1);
+		
+		logger.info("使用执行训练...\n");
+		GradientDescent gd = new GradientDescent(model, 1f);
+		FloatMatrix theta = gd.compute();
 
 		logger.info("准确度测算...\n");
 		float p = MatrixUtil.sigmoid(x.mmul(theta)).ge(0.5f).eq(matrixs[1]).mean() * 100;

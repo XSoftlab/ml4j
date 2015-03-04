@@ -2,7 +2,9 @@ package net.xsoftlab.ml4j.coursera.ml.ex1;
 
 import java.io.IOException;
 
-import net.xsoftlab.ml4j.supervised.LinearRegression;
+import net.xsoftlab.ml4j.minfunc.GradientDescent;
+import net.xsoftlab.ml4j.model.BaseModel;
+import net.xsoftlab.ml4j.model.supervised.LinearRegression;
 import net.xsoftlab.ml4j.util.MathUtil;
 import net.xsoftlab.ml4j.util.MatrixUtil;
 import net.xsoftlab.ml4j.util.TestUtil;
@@ -20,9 +22,12 @@ public class Ex1 extends TestUtil {
 		String path = RESOURCES_PATH + "/coursera/ml/ex1/ex1data1.txt";
 		FloatMatrix[] matrixs = MatrixUtil.loadDataWithXY(path, ",", true);
 
-		logger.info("执行训练...\n");
-		LinearRegression lr = new LinearRegression(matrixs[0], matrixs[1], 0.01f, 1500);
-		FloatMatrix theta = lr.train();
+		logger.info("模型初始化...\n");
+		BaseModel model = new LinearRegression(matrixs[0], matrixs[1]);
+
+		logger.info("使用执行训练...\n");
+		GradientDescent gd = new GradientDescent(model, 0.024f, 1500);
+		FloatMatrix theta = gd.compute();
 
 		logger.info("计算均方差...\n");
 		float rms = MathUtil.std(matrixs[0].mmul(theta), matrixs[1]);
