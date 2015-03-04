@@ -11,6 +11,15 @@ import org.jblas.FloatMatrix;
 public interface BaseRegression {
 
 	/**
+	 * 目标函数
+	 * 
+	 * @param theta
+	 *            参数
+	 * @return 计算好的目标函数
+	 */
+	FloatMatrix function(FloatMatrix theta);
+
+	/**
 	 * 计算梯度
 	 * 
 	 * @param theta
@@ -26,13 +35,13 @@ public interface BaseRegression {
 	 *            参数
 	 * @return 代价值
 	 */
-	public float computeCost(FloatMatrix theta);
+	float computeCost(FloatMatrix theta);
 
 	/**
 	 * 训练
 	 * 
 	 * @return 训练结果
 	 */
-	public FloatMatrix train();
+	FloatMatrix train();
 
 }

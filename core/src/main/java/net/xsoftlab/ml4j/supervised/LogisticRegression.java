@@ -68,10 +68,16 @@ public class LogisticRegression implements BaseRegression {
 	}
 
 	@Override
+	public FloatMatrix function(FloatMatrix theta) {
+
+		return MatrixUtil.sigmoid(x.mmul(theta));
+	}
+
+	@Override
 	public FloatMatrix computeGradient(FloatMatrix theta) {
 
-		// sigmoid(X * theta)
-		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta)).sub(y);
+		// sigmoid(X * theta) - y
+		FloatMatrix h = function(theta).sub(y);
 		// x' * h * (alpha / m)
 		FloatMatrix h1 = x.transpose().mmul(h);
 		FloatMatrix h2 = h1.add(theta.mul(lambda));
@@ -88,7 +94,7 @@ public class LogisticRegression implements BaseRegression {
 	public float computeCost(FloatMatrix theta) {
 
 		// sigmoid(X * theta)
-		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta));
+		FloatMatrix h = function(theta);
 		// -y' * log(h)
 		FloatMatrix h1 = y.neg().transpose().mmul(MatrixUtil.log(h));
 		// (1 - y)' * log(1 - h)
