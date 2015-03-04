@@ -11,11 +11,11 @@ import org.jblas.FloatMatrix;
 public interface BaseRegression {
 
 	/**
-	 * 目标函数
+	 * hypothesis(假设)函数
 	 * 
 	 * @param theta
 	 *            参数
-	 * @return 计算好的目标函数
+	 * @return 计算好的矩阵
 	 */
 	FloatMatrix function(FloatMatrix theta);
 
@@ -29,7 +29,7 @@ public interface BaseRegression {
 	FloatMatrix computeGradient(FloatMatrix theta);
 
 	/**
-	 * 计算代价函数
+	 * 计算代价(目标)函数
 	 * 
 	 * @param theta
 	 *            参数
