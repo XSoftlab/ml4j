@@ -23,10 +23,10 @@ public class Ex_LogisticRegression extends TestUtil {
 		FloatMatrix[] test = map.get("test");
 
 		logger.info("模型初始化...\n");
-		BaseModel model = new LogisticRegression(train[0], train[1]);
+		BaseModel model = new LogisticRegression(train[0], train[1], 1f);
 
 		logger.info("使用执行训练...\n");
-		GradientDescent gd = new GradientDescent(model, 15f, 350);
+		GradientDescent gd = new GradientDescent(model, 150f);
 		FloatMatrix theta = gd.compute();
 
 		logger.info("准确度测算...\n");
