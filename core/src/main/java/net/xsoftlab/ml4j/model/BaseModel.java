@@ -3,7 +3,7 @@ package net.xsoftlab.ml4j.model;
 import org.jblas.FloatMatrix;
 
 /**
- * 算法模型接口
+ * 模型接口
  * 
  * @author 王彦超
  *
@@ -15,6 +15,20 @@ public abstract class BaseModel {
 	protected float lambda = 0f;// 正则化系数
 
 	protected int m;// 样本数量
+
+	public BaseModel(FloatMatrix x, FloatMatrix y) {
+		super();
+		this.x = x;
+		this.y = y;
+
+		this.m = y.length;
+	}
+
+	public BaseModel(FloatMatrix x, FloatMatrix y, float lambda) {
+		this(x, y);
+
+		this.lambda = lambda;
+	}
 
 	/**
 	 * hypothesis(假设)函数

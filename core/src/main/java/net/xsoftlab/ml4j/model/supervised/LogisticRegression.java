@@ -6,7 +6,7 @@ import net.xsoftlab.ml4j.util.MatrixUtil;
 import org.jblas.FloatMatrix;
 
 /**
- * 逻辑回归
+ * 逻辑回归模型
  * 
  * @author 王彦超
  * 
@@ -22,24 +22,21 @@ public class LogisticRegression extends BaseModel {
 	 *            标签
 	 */
 	public LogisticRegression(FloatMatrix x, FloatMatrix y) {
-		super();
-
-		this.x = x;
-		this.y = y;
-
-		this.m = y.length;
+		super(x, y);
 	}
 
 	/**
 	 * 初始化
 	 * 
+	 * @param x
+	 *            特征值
+	 * @param y
+	 *            标签
 	 * @param lambda
 	 *            正则系数
 	 */
 	public LogisticRegression(FloatMatrix x, FloatMatrix y, float lambda) {
-		this(x, y);
-
-		this.lambda = lambda;
+		super(x, y, lambda);
 	}
 
 	@Override
@@ -84,5 +81,5 @@ public class LogisticRegression extends BaseModel {
 
 		return cost;
 	}
-	
+
 }

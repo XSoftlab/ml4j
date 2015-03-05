@@ -5,7 +5,7 @@ import net.xsoftlab.ml4j.model.BaseModel;
 import org.jblas.FloatMatrix;
 
 /**
- * 线性回归
+ * 线性回归模型
  * 
  * @author 王彦超
  * 
@@ -21,12 +21,21 @@ public class LinearRegression extends BaseModel {
 	 *            标签
 	 */
 	public LinearRegression(FloatMatrix x, FloatMatrix y) {
-		super();
+		super(x, y);
+	}
 
-		this.x = x;
-		this.y = y;
-
-		this.m = y.length;
+	/**
+	 * 初始化
+	 * 
+	 * @param x
+	 *            特征值
+	 * @param y
+	 *            标签
+	 * @param lambda
+	 *            正则系数
+	 */
+	public LinearRegression(FloatMatrix x, FloatMatrix y, float lambda) {
+		super(x, y, lambda);
 	}
 
 	@Override
