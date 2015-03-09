@@ -29,7 +29,7 @@ public class Ex1_multi extends TestUtil {
 		logger.info("模型初始化...\n");
 		BaseModel model = new LinearRegression(x, matrixs[1]);
 
-		logger.info("使用执行训练...\n");
+		logger.info("使用梯度下降执行训练...\n");
 		GradientDescent gd = new GradientDescent(model, 0.1f);
 		FloatMatrix theta = gd.compute();
 

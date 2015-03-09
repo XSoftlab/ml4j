@@ -47,7 +47,7 @@ public class Ex_LinearRegression extends TestUtil {
 		logger.info("模型初始化...\n");
 		BaseModel model = new LinearRegression(train_x, train_y);
 
-		logger.info("使用执行训练...\n");
+		logger.info("使用梯度下降执行训练...\n");
 		GradientDescent gd = new GradientDescent(model, 0.3f);
 		FloatMatrix theta = gd.compute();
 

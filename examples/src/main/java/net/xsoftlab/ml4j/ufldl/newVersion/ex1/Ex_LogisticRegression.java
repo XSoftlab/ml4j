@@ -26,7 +26,7 @@ public class Ex_LogisticRegression extends TestUtil {
 		logger.info("模型初始化...\n");
 		BaseModel model = new LogisticRegression(train[0], train[1], 1f);
 
-		logger.info("使用执行训练...\n");
+		logger.info("使用梯度下降执行训练...\n");
 		GradientDescent gd = new GradientDescent(model, 100f);
 		FloatMatrix theta = gd.compute();
 
