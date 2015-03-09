@@ -1,13 +1,11 @@
-package net.xsoftlab.ml4j.ufldl.newVersion.ex1;
+package net.xsoftlab.ml4j.util;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import net.xsoftlab.ml4j.util.FeatureNormalize;
-import net.xsoftlab.ml4j.util.MNISTReader;
 import net.xsoftlab.ml4j.util.MatrixUtil;
-import net.xsoftlab.ml4j.util.TestUtil;
 
 import org.jblas.FloatMatrix;
 
@@ -17,7 +15,7 @@ import org.jblas.FloatMatrix;
  * @author 王彦超
  *
  */
-public class LoadMnist extends TestUtil {
+public class MnistLoader extends TestUtil {
 
 	public static final String PATH = RESOURCES_PATH + "/ufldl/newVersion/ex1/";
 

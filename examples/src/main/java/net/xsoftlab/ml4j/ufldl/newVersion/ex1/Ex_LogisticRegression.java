@@ -6,6 +6,7 @@ import java.util.Map;
 import net.xsoftlab.ml4j.minfunc.GradientDescent;
 import net.xsoftlab.ml4j.model.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
+import net.xsoftlab.ml4j.util.MnistLoader;
 import net.xsoftlab.ml4j.util.MatrixUtil;
 import net.xsoftlab.ml4j.util.TestUtil;
 
@@ -18,7 +19,7 @@ public class Ex_LogisticRegression extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		Map<String, FloatMatrix[]> map = LoadMnist.load(true);
+		Map<String, FloatMatrix[]> map = MnistLoader.load(true);
 		FloatMatrix[] train = map.get("train");
 		FloatMatrix[] test = map.get("test");
 
