@@ -85,8 +85,13 @@ public class BFGS {
 				logger.debug("  {} \t   {}   \t {}", new Object[] { i + 1, cost0 - cost1, cost1 });
 			}
 
+			if (g1.transpose().mmul(g1).get(0) < epsilon) {
+				logger.info("\n已达到梯度精度阀值.\n");
+				return theta1;
+			}
+
 			if (cost0 - cost1 < epsilon) {
-				logger.info("\n已达到精度阀值.\n");
+				logger.info("\n已达到cost精度阀值.\n");
 				return theta1;
 			}
 
