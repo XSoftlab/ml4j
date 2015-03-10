@@ -19,12 +19,8 @@ public class GradientDescent {
 	private int maxIter = 500;// 最大训练次数
 	private float epsilon = (float) 1e-6;// 精度阀值
 
-	public void setEpsilon(float epsilon) {
-		this.epsilon = epsilon;
-	}
-
 	private FloatMatrix theta;// 参数
-	private boolean costFlag = true;// 是否打印cost
+	private boolean logFlag = true;// 是否打印过程日志
 
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
@@ -43,7 +39,7 @@ public class GradientDescent {
 
 		this.theta = model.theta();
 	}
-	
+
 	/**
 	 * 初始化
 	 * 
@@ -68,19 +64,21 @@ public class GradientDescent {
 	public FloatMatrix compute() {
 
 		float step, cost0 = 0, cost1 = 0;
-
-		logger.debug("迭代次数 \t\t步长 \t\t    cost");
+		
+		if (logFlag)
+			logger.debug("迭代次数 \t\t步长 \t\t    cost");
+		
 		for (int i = 0; i < maxIter; i++) {
 
 			theta = theta.sub(model.gradient(theta).mul(alpha));
 			cost1 = model.cost(theta);
 			step = Math.abs(cost0 - cost1);
 
-			if (costFlag) {
+			if (logFlag) {
 				logger.debug("  {} \t   {}   \t {}", new Object[] { i + 1, step, cost1 });
 			}
 			if (step < epsilon) {
-				logger.debug("\n已达到精度阀值.\n");
+				logger.info("\n已达到精度阀值.\n");
 				return theta;
 			}
 
@@ -90,12 +88,16 @@ public class GradientDescent {
 		return theta;
 	}
 
+	public void setEpsilon(float epsilon) {
+		this.epsilon = epsilon;
+	}
+
 	public void setTheta(FloatMatrix theta) {
 		this.theta = theta;
 	}
 
 	public void setCostFlag(boolean costFlag) {
-		this.costFlag = costFlag;
+		this.logFlag = costFlag;
 	}
 
 }

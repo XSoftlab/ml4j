@@ -6,8 +6,8 @@ import java.util.Map;
 import net.xsoftlab.ml4j.minfunc.GradientDescent;
 import net.xsoftlab.ml4j.model.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
-import net.xsoftlab.ml4j.util.MnistLoader;
 import net.xsoftlab.ml4j.util.MatrixUtil;
+import net.xsoftlab.ml4j.util.MnistLoader;
 import net.xsoftlab.ml4j.util.TestUtil;
 
 import org.jblas.FloatMatrix;
@@ -29,6 +29,10 @@ public class Ex_LogisticRegression extends TestUtil {
 		logger.info("使用梯度下降执行训练...\n");
 		GradientDescent gd = new GradientDescent(model, 100f);
 		FloatMatrix theta = gd.compute();
+
+		// logger.info("使用BFGS执行训练...\n");
+		// BFGS bfgs = new BFGS(model);
+		// FloatMatrix theta = bfgs.compute();
 
 		logger.info("准确度测算...\n");
 		float p = MatrixUtil.sigmoid(train[0].mmul(theta)).ge(0.5f).eq(train[1]).mean() * 100;

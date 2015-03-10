@@ -2,7 +2,7 @@ package net.xsoftlab.ml4j.coursera.ml.ex2;
 
 import java.io.IOException;
 
-import net.xsoftlab.ml4j.minfunc.GradientDescent;
+import net.xsoftlab.ml4j.minfunc.BFGS;
 import net.xsoftlab.ml4j.model.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
 import net.xsoftlab.ml4j.util.FeatureNormalize;
@@ -28,11 +28,15 @@ public class Ex2 extends TestUtil {
 
 		logger.info("模型初始化...\n");
 		BaseModel model = new LogisticRegression(x, matrixs[1]);
-		
-		logger.info("使用梯度下降执行训练...\n");
-		GradientDescent gd = new GradientDescent(model, 10f, 100);
-		FloatMatrix theta = gd.compute();
-		
+
+		// logger.info("使用梯度下降执行训练...\n");
+		// GradientDescent gd = new GradientDescent(model, 10f, 100);
+		// FloatMatrix theta = gd.compute();
+
+		logger.info("使用BFGS执行训练...\n");
+		BFGS bfgs = new BFGS(model);
+		FloatMatrix theta = bfgs.compute();
+
 		logger.info("准确度测算...\n");
 		x = x.mmul(theta);
 		float p = x.ge(0.5f).eq(matrixs[1]).mean() * 100;
