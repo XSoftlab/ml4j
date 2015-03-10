@@ -144,6 +144,21 @@ public class MatrixUtil {
 	}
 
 	/**
+	 * 从文件中加载数据   - 添加截距项
+	 * 
+	 * @param filePath
+	 *            文件路径
+	 * @param split
+	 *            分隔符
+	 * 
+	 * @return 数据矩阵
+	 */
+	public static FloatMatrix loadData(String filePath, String split) throws IOException {
+
+		return loadData(new FileInputStream(filePath), split, true);
+	}
+
+	/**
 	 * 将字符串数组转化为float数组
 	 * 
 	 * @param data
@@ -452,25 +467,6 @@ public class MatrixUtil {
 	}
 
 	/**
-	 * 克隆矩阵
-	 * 
-	 * @param matrix
-	 *            要克隆的矩阵
-	 * @return 克隆好的矩阵
-	 */
-	public static FloatMatrix clone(FloatMatrix matrix) {
-
-		int rows = matrix.rows;
-		int columns = matrix.columns;
-		FloatMatrix result = new FloatMatrix(rows, columns);
-		for (int i = 0; i < rows; i++) {
-			result.putRow(i, matrix.getRow(i));
-		}
-
-		return result;
-	}
-
-	/**
 	 * 计算向量的开方
 	 * 
 	 * @param vector
@@ -488,7 +484,7 @@ public class MatrixUtil {
 		if (time == 0)
 			return FloatMatrix.ones(vector.rows, vector.columns);
 
-		FloatMatrix result = clone(vector);
+		FloatMatrix result = vector.dup();// copy矩阵
 		for (int i = 1; i < time; i++) {
 			result.muli(vector);
 		}
