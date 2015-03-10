@@ -65,7 +65,7 @@ public class BFGS {
 		float cost0 = model.cost(theta);// 初始cost
 		FloatMatrix g0 = model.gradient(theta);// 初始梯度
 
-		float cost1, p, lamda;// 一维搜索步长
+		float cost1, p, lamda;// lamda:一维搜索步长
 		FloatMatrix d, s, theta1, g1, yk, V, D1;// dk,sk,xk+1,gk
 
 		if (logFlag)

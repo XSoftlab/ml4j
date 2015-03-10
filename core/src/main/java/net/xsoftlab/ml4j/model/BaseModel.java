@@ -64,6 +64,6 @@ public abstract class BaseModel {
 	 */
 	public FloatMatrix theta() {
 
-		return FloatMatrix.zeros(x.columns, 1);
+		return FloatMatrix.rand(x.columns, 1).mul(0.001f);
 	}
 }
