@@ -16,28 +16,16 @@ public abstract class BaseModel {
 
 	protected int m;// 样本数量
 
-	public BaseModel(FloatMatrix x, FloatMatrix y) {
-		super();
-		this.x = x;
-		this.y = y;
-
-		this.m = y.length;
-	}
-
-	public BaseModel(FloatMatrix x, FloatMatrix y, float lambda) {
-		this(x, y);
-
-		this.lambda = lambda;
-	}
-
 	/**
 	 * hypothesis(假设)函数
 	 * 
+	 * @param x
+	 *            x
 	 * @param theta
 	 *            参数
 	 * @return 计算好的矩阵
 	 */
-	public abstract FloatMatrix function(FloatMatrix theta);
+	public abstract FloatMatrix function(FloatMatrix x, FloatMatrix theta);
 
 	/**
 	 * 计算梯度

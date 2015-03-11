@@ -22,7 +22,11 @@ public class LogisticRegression extends BaseModel {
 	 *            标签
 	 */
 	public LogisticRegression(FloatMatrix x, FloatMatrix y) {
-		super(x, y);
+		super();
+		this.x = x;
+		this.y = y;
+
+		this.m = y.length;
 	}
 
 	/**
@@ -36,11 +40,13 @@ public class LogisticRegression extends BaseModel {
 	 *            正则系数
 	 */
 	public LogisticRegression(FloatMatrix x, FloatMatrix y, float lambda) {
-		super(x, y, lambda);
+		this(x, y);
+
+		this.lambda = lambda;
 	}
 
 	@Override
-	public FloatMatrix function(FloatMatrix theta) {
+	public FloatMatrix function(FloatMatrix x, FloatMatrix theta) {
 
 		return MatrixUtil.sigmoid(x.mmul(theta));
 	}
@@ -49,7 +55,7 @@ public class LogisticRegression extends BaseModel {
 	public FloatMatrix gradient(FloatMatrix theta) {
 
 		// sigmoid(X * theta) - y
-		FloatMatrix h = function(theta).sub(y);
+		FloatMatrix h = function(x, theta).sub(y);
 		// x' * h * (alpha / m)
 		FloatMatrix h1 = x.transpose().mmul(h);
 		FloatMatrix h2 = h1.add(theta.mul(lambda));
@@ -66,7 +72,7 @@ public class LogisticRegression extends BaseModel {
 	public float cost(FloatMatrix theta) {
 
 		// sigmoid(X * theta)
-		FloatMatrix h = function(theta);
+		FloatMatrix h = function(x, theta);
 		// -y' * log(h)
 		FloatMatrix h1 = y.neg().transpose().mmul(MatrixUtil.log(h));
 		// (1 - y)' * log(1 - h)

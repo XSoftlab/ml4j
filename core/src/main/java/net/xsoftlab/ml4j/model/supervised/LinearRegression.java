@@ -21,7 +21,11 @@ public class LinearRegression extends BaseModel {
 	 *            标签
 	 */
 	public LinearRegression(FloatMatrix x, FloatMatrix y) {
-		super(x, y);
+		super();
+		this.x = x;
+		this.y = y;
+
+		this.m = y.length;
 	}
 
 	/**
@@ -35,11 +39,13 @@ public class LinearRegression extends BaseModel {
 	 *            正则系数
 	 */
 	public LinearRegression(FloatMatrix x, FloatMatrix y, float lambda) {
-		super(x, y, lambda);
+		this(x, y);
+
+		this.lambda = lambda;
 	}
 
 	@Override
-	public FloatMatrix function(FloatMatrix theta) {
+	public FloatMatrix function(FloatMatrix x, FloatMatrix theta) {
 
 		return x.mmul(theta);
 	}
@@ -47,7 +53,7 @@ public class LinearRegression extends BaseModel {
 	@Override
 	public FloatMatrix gradient(FloatMatrix theta) {
 
-		FloatMatrix h = function(theta).sub(y); // x * theta - y
+		FloatMatrix h = function(x, theta).sub(y); // x * theta - y
 		// x' * h * (alpha / m)
 		FloatMatrix h1 = x.transpose().mmul(h);
 		FloatMatrix h2 = h1.add(theta.mul(lambda));
@@ -63,7 +69,7 @@ public class LinearRegression extends BaseModel {
 	@Override
 	public float cost(FloatMatrix theta) {
 
-		FloatMatrix h = function(theta).sub(y); // x * theta - y
+		FloatMatrix h = function(x, theta).sub(y); // x * theta - y
 		FloatMatrix h1 = h.transpose().mmul(h);// h' * h
 		float cost = h1.get(0);
 

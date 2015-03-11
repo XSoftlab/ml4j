@@ -118,7 +118,7 @@ public class MatrixUtil {
 			if (reader != null)
 				reader.close();
 		}
-
+		
 		matrix = new FloatMatrix(list.size(), numColumns);
 		for (int i = 0; i < list.size(); i++)
 			matrix.putRow(i, new FloatMatrix(list.get(i)));
@@ -144,7 +144,7 @@ public class MatrixUtil {
 	}
 
 	/**
-	 * 从文件中加载数据   - 添加截距项
+	 * 从文件中加载数据 - 不添加截距项
 	 * 
 	 * @param filePath
 	 *            文件路径
@@ -155,7 +155,7 @@ public class MatrixUtil {
 	 */
 	public static FloatMatrix loadData(String filePath, String split) throws IOException {
 
-		return loadData(new FileInputStream(filePath), split, true);
+		return loadData(new FileInputStream(filePath), split, false);
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class MatrixUtil {
 	 */
 	public static FloatMatrix addIntercept(FloatMatrix matrix) {
 
-		return add(FloatMatrix.ones(matrix.rows), matrix, 2);
+		return merge(FloatMatrix.ones(matrix.rows), matrix, 2);
 	}
 
 	/**
@@ -328,9 +328,27 @@ public class MatrixUtil {
 	 *            要合并的矩阵
 	 * @return 合并后的矩阵
 	 */
-	public static FloatMatrix add(FloatMatrix matrix, FloatMatrix additional) {
+	public static FloatMatrix merge(FloatMatrix matrix, FloatMatrix additional) {
 
-		return add(matrix, additional, 1);
+		return merge(matrix, additional, 1);
+	}
+
+	/**
+	 * 矩阵合并
+	 * 
+	 * @param matrix
+	 *            原始矩阵数组
+	 * @param additional
+	 *            要合并的矩阵数组
+	 * @return 合并后的矩阵
+	 */
+	public static FloatMatrix merge(float[] matrix, float[] additional) {
+
+		float[] result = new float[matrix.length + additional.length];
+		System.arraycopy(matrix, 0, result, 0, matrix.length);
+		System.arraycopy(additional, 0, result, matrix.length, additional.length);
+
+		return new FloatMatrix(result);
 	}
 
 	/**
@@ -344,7 +362,7 @@ public class MatrixUtil {
 	 *            1/按行合并 2/按列合并
 	 * @return 合并后的矩阵
 	 */
-	public static FloatMatrix add(FloatMatrix matrix, FloatMatrix additional, int dim) {
+	public static FloatMatrix merge(FloatMatrix matrix, FloatMatrix additional, int dim) {
 
 		int rows = matrix.rows;
 		int columns = matrix.columns;

@@ -52,8 +52,8 @@ public class MnistLoader extends TestUtil {
 			// Take only the 0 and 1 digits
 			int[] y0 = train_y.eq(0).findIndices();
 			int[] y1 = train_y.eq(1).findIndices();
-			train_X = MatrixUtil.add(train_X.getRows(y0), train_X.getRows(y1));
-			train_y = MatrixUtil.add(train_y.getRows(y0), train_y.getRows(y1));
+			train_X = MatrixUtil.merge(train_X.getRows(y0), train_X.getRows(y1));
+			train_y = MatrixUtil.merge(train_y.getRows(y0), train_y.getRows(y1));
 		}
 
 		// Randomly shuffle the data
@@ -78,8 +78,8 @@ public class MnistLoader extends TestUtil {
 			// Take only the 0 and 1 digits
 			int[] y0 = test_y.eq(0).findIndices();
 			int[] y1 = test_y.eq(1).findIndices();
-			test_X = MatrixUtil.add(test_X.getRows(y0), test_X.getRows(y1));
-			test_y = MatrixUtil.add(test_y.getRows(y0), test_y.getRows(y1));
+			test_X = MatrixUtil.merge(test_X.getRows(y0), test_X.getRows(y1));
+			test_y = MatrixUtil.merge(test_y.getRows(y0), test_y.getRows(y1));
 		}
 
 		// Randomly shuffle the data

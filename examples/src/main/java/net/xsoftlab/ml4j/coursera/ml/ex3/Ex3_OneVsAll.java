@@ -17,10 +17,12 @@ public class Ex3_OneVsAll extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
+		
 		String x_path = RESOURCES_PATH + "/coursera/ml/ex3/X.data";
 		String y_path = RESOURCES_PATH + "/coursera/ml/ex3/y.data";
+		
 		FloatMatrix X = MatrixUtil.loadData(x_path, "\\s+", true);
-		FloatMatrix y = MatrixUtil.loadData(y_path, "\\s+", false);
+		FloatMatrix y = MatrixUtil.loadData(y_path, "\\s+");
 
 		int num_labels = 10;
 		FloatMatrix all_theta = FloatMatrix.zeros(X.columns, num_labels);
