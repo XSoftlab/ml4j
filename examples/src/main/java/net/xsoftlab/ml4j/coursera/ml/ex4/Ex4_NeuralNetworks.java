@@ -37,7 +37,7 @@ public class Ex4_NeuralNetworks extends TestUtil {
 
 		logger.info("模型 初始化...\n");
 
-		BaseModel model = new NeuralNetworks(input_layer_size, hidden_layer_size, num_labels, X, y);
+		BaseModel model = new NeuralNetworks(input_layer_size, hidden_layer_size, num_labels, X, y, 1);
 		System.out.println("cost:" + model.cost(all_theta));
 
 		toc();

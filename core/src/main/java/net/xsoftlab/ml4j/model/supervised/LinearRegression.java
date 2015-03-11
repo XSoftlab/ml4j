@@ -73,8 +73,8 @@ public class LinearRegression extends BaseModel {
 		FloatMatrix h1 = h.transpose().mmul(h);// h' * h
 		float cost = h1.get(0);
 
-		FloatMatrix theta1 = theta.getRange(1, theta.length);
 		if (lambda != 0) {
+			FloatMatrix theta1 = theta.getRange(1, theta.length);
 			float cost1 = lambda * theta1.transpose().mmul(theta1).get(0);
 			cost += cost1;
 		}

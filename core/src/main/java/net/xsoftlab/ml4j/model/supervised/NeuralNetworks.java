@@ -105,11 +105,19 @@ public class NeuralNetworks extends BaseModel {
 			Y.putColumn(i, y.eq(i + 1));
 
 		// -Y .* log(a3)
-		FloatMatrix h1 = y.neg().mmul(MatrixUtil.log(a3));
+		FloatMatrix h1 = Y.neg().mul(MatrixUtil.log(a3));
 		// (1 - Y) .* log(1 - a3)
-		FloatMatrix h2 = (y.neg().add(1f)).mmul(MatrixUtil.log(a3.neg().add(1f)));
+		FloatMatrix h2 = (Y.neg().add(1f)).mul(MatrixUtil.log(a3.neg().add(1f)));
 
-		float cost = 1f / m * h1.div(h2).sum();// 1 / m * (h1 - h2)
+		float cost = 1f / m * h1.sub(h2).sum();// 1 / m * (h1 - h2)
+
+		if (lambda != 0) {
+			FloatMatrix theta3 = theta1.getRange(1, theta1.length);
+			FloatMatrix theta4 = theta2.getRange(1, theta2.length);
+			float cost1 = lambda / (2 * m)
+					* (theta3.transpose().mmul(theta3).sum() + theta4.transpose().mmul(theta4).sum());
+			cost += cost1;
+		}
 
 		return cost;
 	}

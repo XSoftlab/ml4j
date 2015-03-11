@@ -118,7 +118,9 @@ public class MatrixUtil {
 			if (reader != null)
 				reader.close();
 		}
-		
+
+		numColumns = intercept ? numColumns + 1 : numColumns;
+
 		matrix = new FloatMatrix(list.size(), numColumns);
 		for (int i = 0; i < list.size(); i++)
 			matrix.putRow(i, new FloatMatrix(list.get(i)));

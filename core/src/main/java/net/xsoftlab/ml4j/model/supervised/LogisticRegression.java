@@ -79,8 +79,8 @@ public class LogisticRegression extends BaseModel {
 		FloatMatrix h2 = (y.neg().add(1f)).transpose().mmul(MatrixUtil.log(h.neg().add(1f)));
 		float cost = 1f / m * (h1.get(0) - h2.get(0));// 1 / m * (h1 - h2)
 
-		FloatMatrix theta1 = theta.getRange(1, theta.length);
 		if (lambda != 0) {
+			FloatMatrix theta1 = theta.getRange(1, theta.length);
 			float cost1 = lambda / (2 * m) * theta1.transpose().mmul(theta1).get(0);
 			cost += cost1;
 		}
