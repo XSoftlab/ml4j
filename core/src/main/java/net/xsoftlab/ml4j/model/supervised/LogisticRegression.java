@@ -46,46 +46,43 @@ public class LogisticRegression extends BaseModel {
 	}
 
 	@Override
-	public FloatMatrix function(FloatMatrix x, FloatMatrix theta) {
-
-		return MatrixUtil.sigmoid(x.mmul(theta));
-	}
-
-	@Override
-	public FloatMatrix gradient(FloatMatrix theta) {
-
-		// sigmoid(X * theta) - y
-		FloatMatrix h = function(x, theta).sub(y);
-		// x' * h * (alpha / m)
-		FloatMatrix h1 = x.transpose().mmul(h);
-		FloatMatrix h2 = h1.add(theta.mul(lambda));
-
-		if (lambda != 0) {
-			FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
-			h2.put(0, h3.get(0));
-		}
-
-		return h2.div(m);
-	}
-
-	@Override
-	public float cost(FloatMatrix theta) {
+	public void compute(FloatMatrix theta, int flag) {
 
 		// sigmoid(X * theta)
-		FloatMatrix h = function(x, theta);
-		// -y' * log(h)
-		FloatMatrix h1 = y.neg().transpose().mmul(MatrixUtil.log(h));
-		// (1 - y)' * log(1 - h)
-		FloatMatrix h2 = (y.neg().add(1f)).transpose().mmul(MatrixUtil.log(h.neg().add(1f)));
-		float cost = 1f / m * (h1.get(0) - h2.get(0));// 1 / m * (h1 - h2)
+		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta));
+		if (flag == 1 || flag == 3) {
+			h = h.sub(y);// sigmoid(X * theta) - y
+			// x' * h * (alpha / m)
+			FloatMatrix h1 = x.transpose().mmul(h);
+			FloatMatrix h2 = h1.add(theta.mul(lambda));
 
-		if (lambda != 0) {
-			FloatMatrix theta1 = theta.getRange(1, theta.length);
-			float cost1 = lambda / (2 * m) * theta1.transpose().mmul(theta1).get(0);
-			cost += cost1;
+			if (lambda != 0) {
+				FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
+				h2.put(0, h3.get(0));
+			}
+
+			this.gradient = h2.div(m);
+		}
+		if (flag == 2 || flag == 3) {
+			// -y' * log(h)
+			FloatMatrix h1 = y.neg().transpose().mmul(MatrixUtil.log(h));
+			// (1 - y)' * log(1 - h)
+			FloatMatrix h2 = (y.neg().add(1f)).transpose().mmul(MatrixUtil.log(h.neg().add(1f)));
+			this.cost = 1f / m * (h1.get(0) - h2.get(0));// 1 / m * (h1 - h2)
+
+			if (lambda != 0) {
+				FloatMatrix theta1 = theta.getRange(1, theta.length);
+				float cost1 = lambda / (2 * m) * theta1.transpose().mmul(theta1).get(0);
+				cost += cost1;
+			}
 		}
 
-		return cost;
+	}
+
+	@Override
+	public FloatMatrix getInitTheta() {
+
+		return FloatMatrix.rand(x.columns, 1).mul(0.001f);
 	}
 
 }

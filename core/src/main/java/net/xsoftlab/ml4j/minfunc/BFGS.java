@@ -33,7 +33,7 @@ public class BFGS {
 		super();
 		this.model = model;
 
-		this.theta = model.theta();
+		this.theta = model.getInitTheta();
 	}
 
 	/**
@@ -62,8 +62,9 @@ public class BFGS {
 		FloatMatrix I = FloatMatrix.eye(n);// 单位矩阵
 		FloatMatrix D0 = I;// 初始化D0
 
-		float cost0 = model.cost(theta);// 初始cost
-		FloatMatrix g0 = model.gradient(theta);// 初始梯度
+		model.compute(theta, 3);
+		float cost0 = model.getCost();// 初始cost
+		FloatMatrix g0 = model.getGradient();// 初始梯度
 
 		float cost1, p, lamda;// lamda:一维搜索步长
 		FloatMatrix d, s, theta1, g1, yk, V, D1;// dk,sk,xk+1,gk
@@ -78,8 +79,9 @@ public class BFGS {
 			s = d.mul(lamda);
 			theta1 = theta.add(s);
 
-			cost1 = model.cost(theta1);
-			g1 = model.gradient(theta1);
+			model.compute(theta1, 3);
+			cost1 = model.getCost();// 初始cost
+			g1 = model.getGradient();// 初始梯度
 
 			if (logFlag) {
 				logger.debug("  {} \t   {}   \t {}", new Object[] { i + 1, cost0 - cost1, cost1 });

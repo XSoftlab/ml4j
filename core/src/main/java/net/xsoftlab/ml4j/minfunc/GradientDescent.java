@@ -37,7 +37,7 @@ public class GradientDescent {
 		this.model = model;
 		this.alpha = alpha;
 
-		this.theta = model.theta();
+		this.theta = model.getInitTheta();
 	}
 
 	/**

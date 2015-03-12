@@ -15,43 +15,32 @@ public abstract class BaseModel {
 	protected float lambda = 0f;// 正则化系数
 
 	protected int m;// 样本数量
+	protected float cost;// cost
+	protected FloatMatrix gradient;// 梯度
 
 	/**
-	 * hypothesis(假设)函数
-	 * 
-	 * @param x
-	 *            x
-	 * @param theta
-	 *            参数
-	 * @return 计算好的矩阵
-	 */
-	public abstract FloatMatrix function(FloatMatrix x, FloatMatrix theta);
-
-	/**
-	 * 计算梯度
+	 * 计算梯度/代价(目标)函数
 	 * 
 	 * @param theta
 	 *            参数
-	 * @return theta
+	 * @param flag
+	 *            1.计算梯度 2.计算cost 3.计算全部
+	 * @return 梯度/cost
 	 */
-	public abstract FloatMatrix gradient(FloatMatrix theta);
-
-	/**
-	 * 计算代价(目标)函数
-	 * 
-	 * @param theta
-	 *            参数
-	 * @return 代价值
-	 */
-	public abstract float cost(FloatMatrix theta);
+	public abstract void compute(FloatMatrix theta, int flag);
 
 	/**
 	 * 获取初始theta值
 	 * 
 	 * @return theta
 	 */
-	public FloatMatrix theta() {
+	public abstract FloatMatrix getInitTheta();
 
-		return FloatMatrix.rand(x.columns, 1).mul(0.001f);
+	public float getCost() {
+		return cost;
+	}
+
+	public FloatMatrix getGradient() {
+		return gradient;
 	}
 }
