@@ -64,14 +64,15 @@ public class GradientDescent {
 	public FloatMatrix compute() {
 
 		float step, cost0 = 0, cost1 = 0;
-		
+
 		if (logFlag)
 			logger.debug("迭代次数 \t\t步长 \t\t    cost");
-		
+
 		for (int i = 0; i < maxIter; i++) {
 
-			theta = theta.sub(model.gradient(theta).mul(alpha));
-			cost1 = model.cost(theta);
+			model.compute(theta, 3);
+			theta = theta.sub(model.getGradient().mul(alpha));
+			cost1 = model.getCost();
 			step = Math.abs(cost0 - cost1);
 
 			if (logFlag) {

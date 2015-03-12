@@ -50,20 +50,8 @@ public class LogisticRegression extends BaseModel {
 
 		// sigmoid(X * theta)
 		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta));
+
 		if (flag == 1 || flag == 3) {
-			h = h.sub(y);// sigmoid(X * theta) - y
-			// x' * h * (alpha / m)
-			FloatMatrix h1 = x.transpose().mmul(h);
-			FloatMatrix h2 = h1.add(theta.mul(lambda));
-
-			if (lambda != 0) {
-				FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
-				h2.put(0, h3.get(0));
-			}
-
-			this.gradient = h2.div(m);
-		}
-		if (flag == 2 || flag == 3) {
 			// -y' * log(h)
 			FloatMatrix h1 = y.neg().transpose().mmul(MatrixUtil.log(h));
 			// (1 - y)' * log(1 - h)
@@ -77,6 +65,19 @@ public class LogisticRegression extends BaseModel {
 			}
 		}
 
+		if (flag == 2 || flag == 3) {
+			h = h.sub(y);// sigmoid(X * theta) - y
+			// x' * h * (alpha / m)
+			FloatMatrix h1 = x.transpose().mmul(h);
+			FloatMatrix h2 = h1.add(theta.mul(lambda));
+
+			if (lambda != 0) {
+				FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
+				h2.put(0, h3.get(0));
+			}
+
+			this.gradient = h2.div(m);
+		}
 	}
 
 	@Override

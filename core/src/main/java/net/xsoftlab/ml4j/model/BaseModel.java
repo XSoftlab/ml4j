@@ -24,7 +24,7 @@ public abstract class BaseModel {
 	 * @param theta
 	 *            参数
 	 * @param flag
-	 *            1.计算梯度 2.计算cost 3.计算全部
+	 *            1.计算cost 2.计算梯度 3.计算全部
 	 * @return 梯度/cost
 	 */
 	public abstract void compute(FloatMatrix theta, int flag);

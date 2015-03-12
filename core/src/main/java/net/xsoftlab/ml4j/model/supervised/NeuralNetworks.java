@@ -78,7 +78,8 @@ public class NeuralNetworks extends BaseModel {
 		theta1 = theta1.reshape(hiddenLayerSize, inputLayerSize + 1);
 		theta2 = theta2.reshape(numLabels, hiddenLayerSize + 1);
 
-		FloatMatrix z2 = x.mmul(theta1.transpose());
+		FloatMatrix a1 = x;
+		FloatMatrix z2 = a1.mmul(theta1.transpose());
 		FloatMatrix a2 = MatrixUtil.addIntercept(MatrixUtil.sigmoid(z2));
 		FloatMatrix a3 = MatrixUtil.sigmoid(a2.mmul(theta2.transpose()));
 
@@ -103,6 +104,27 @@ public class NeuralNetworks extends BaseModel {
 			}
 		}
 
+		if (flag == 2 || flag == 3) {
+
+			FloatMatrix l3 = a3.sub(Y);
+			z2 = MatrixUtil.addIntercept(z2);
+			FloatMatrix l2 = l3.mmul(theta2).mul(sigmoidGradient(z2));
+
+			l2 = l2.getRange(0, l2.rows, 1, l2.columns);// l2(:,2:end)
+			FloatMatrix theta1Grad = l2.transpose().mmul(a1).add(theta1.mul(lambda));
+			FloatMatrix theta2Grad = l3.transpose().mmul(a2).add(theta2.mul(lambda));
+			if (lambda != 0) {
+				FloatMatrix theta1Grad1 = l2.transpose().mmul(a1.getColumn(0));
+				theta1Grad.putColumn(0, theta1Grad1);
+
+				FloatMatrix theta2Grad1 = l3.transpose().mmul(a2.getColumn(0));
+				theta2Grad.putColumn(0, theta2Grad1);
+			}
+
+			theta1Grad = theta1Grad.div(m);
+			theta2Grad = theta2Grad.div(m);
+			this.gradient = MatrixUtil.merge(theta1Grad.data, theta2Grad.data);
+		}
 	}
 
 	@Override

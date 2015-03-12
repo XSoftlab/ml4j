@@ -50,17 +50,6 @@ public class LinearRegression extends BaseModel {
 		FloatMatrix h = x.mmul(theta).sub(y); // x * theta - y
 
 		if (flag == 1 || flag == 3) {
-			FloatMatrix h1 = x.transpose().mmul(h);// x' * h * (alpha / m)
-			FloatMatrix h2 = h1.add(theta.mul(lambda));
-
-			if (lambda != 0) {
-				FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
-				h2.put(0, h3.get(0));
-			}
-			this.gradient = h2.div(m);
-		}
-
-		if (flag == 2 || flag == 3) {
 			FloatMatrix h1 = h.transpose().mmul(h);// h' * h
 			this.cost = h1.get(0);
 
@@ -70,6 +59,17 @@ public class LinearRegression extends BaseModel {
 				cost += cost1;
 			}
 			cost = 1f / (2 * m) * cost;
+		}
+		
+		if (flag == 2 || flag == 3) {
+			FloatMatrix h1 = x.transpose().mmul(h);// x' * h * (alpha / m)
+			FloatMatrix h2 = h1.add(theta.mul(lambda));
+
+			if (lambda != 0) {
+				FloatMatrix h3 = x.getColumn(0).transpose().mmul(h);
+				h2.put(0, h3.get(0));
+			}
+			this.gradient = h2.div(m);
 		}
 	}
 
