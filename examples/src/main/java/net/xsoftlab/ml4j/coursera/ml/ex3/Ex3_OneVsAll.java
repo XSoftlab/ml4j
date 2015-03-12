@@ -3,6 +3,7 @@ package net.xsoftlab.ml4j.coursera.ml.ex3;
 import java.io.IOException;
 
 import net.xsoftlab.ml4j.minfunc.BFGS;
+import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
 import net.xsoftlab.ml4j.util.MatrixUtil;
@@ -17,17 +18,17 @@ public class Ex3_OneVsAll extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		
+
 		String x_path = RESOURCES_PATH + "/coursera/ml/ex3/X.data";
 		String y_path = RESOURCES_PATH + "/coursera/ml/ex3/y.data";
-		
+
 		FloatMatrix X = MatrixUtil.loadData(x_path, "\\s+", true);
 		FloatMatrix y = MatrixUtil.loadData(y_path, "\\s+");
 
 		int num_labels = 10;
 		FloatMatrix all_theta = FloatMatrix.zeros(X.columns, num_labels);
 
-		BFGS bfgs = null;
+		MinFunc minFunc = null;
 		BaseModel model = null;
 		FloatMatrix theta = null;
 		for (int i = 1; i <= num_labels; i++) {
@@ -36,8 +37,8 @@ public class Ex3_OneVsAll extends TestUtil {
 			model = new LogisticRegression(X, y.eq(i));
 
 			logger.info("使用BFGS执行训练...\n");
-			bfgs = new BFGS(model, 50);
-			theta = bfgs.compute();
+			minFunc = new BFGS(model, 50);
+			theta = minFunc.compute();
 			all_theta.putColumn(i - 1, theta);
 		}
 

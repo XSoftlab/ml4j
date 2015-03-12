@@ -3,8 +3,6 @@ package net.xsoftlab.ml4j.minfunc;
 import net.xsoftlab.ml4j.model.BaseModel;
 
 import org.jblas.FloatMatrix;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * 梯度下降
@@ -12,17 +10,9 @@ import org.slf4j.LoggerFactory;
  * @author 王彦超
  *
  */
-public class GradientDescent {
+public class GradientDescent extends MinFunc {
 
-	private BaseModel model;// 训练模型
 	private float alpha = 0.01f;// 训练速度
-	private int maxIter = 500;// 最大训练次数
-	private float epsilon = (float) 1e-6;// 精度阀值
-
-	private FloatMatrix theta;// 参数
-	private boolean logFlag = true;// 是否打印过程日志
-
-	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
 	 * 初始化
@@ -57,10 +47,11 @@ public class GradientDescent {
 	}
 
 	/**
-	 * 计算theta
+	 * 最优化theta
 	 * 
 	 * @return theta
 	 */
+	@Override
 	public FloatMatrix compute() {
 
 		float step, cost0 = 0, cost1 = 0;
@@ -88,17 +79,4 @@ public class GradientDescent {
 
 		return theta;
 	}
-
-	public void setEpsilon(float epsilon) {
-		this.epsilon = epsilon;
-	}
-
-	public void setTheta(FloatMatrix theta) {
-		this.theta = theta;
-	}
-
-	public void setCostFlag(boolean costFlag) {
-		this.logFlag = costFlag;
-	}
-
 }

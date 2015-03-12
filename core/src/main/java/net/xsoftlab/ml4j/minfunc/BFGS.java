@@ -3,8 +3,6 @@ package net.xsoftlab.ml4j.minfunc;
 import net.xsoftlab.ml4j.model.BaseModel;
 
 import org.jblas.FloatMatrix;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * BFGS
@@ -12,16 +10,7 @@ import org.slf4j.LoggerFactory;
  * @author 王彦超
  *
  */
-public class BFGS {
-
-	private BaseModel model;// 训练模型
-	private int maxIter = 500;// 最大训练次数
-	private float epsilon = (float) 1e-6;// 精度阀值
-
-	private FloatMatrix theta;// 参数
-	private boolean logFlag = true;// 是否打印过程日志
-
-	Logger logger = LoggerFactory.getLogger(this.getClass());
+public class BFGS extends MinFunc {
 
 	/**
 	 * 初始化
@@ -51,11 +40,12 @@ public class BFGS {
 	}
 
 	/**
-	 * 计算theta
+	 * 最优化theta
 	 * 
 	 * @return theta
 	 * @see http://blog.csdn.net/itplus/article/details/21897443
 	 */
+	@Override
 	public FloatMatrix compute() {
 
 		int n = theta.length; // theat长度
@@ -110,18 +100,6 @@ public class BFGS {
 
 		return theta;
 	}
-
-	public void setEpsilon(float epsilon) {
-		this.epsilon = epsilon;
-	}
-
-	public void setTheta(FloatMatrix theta) {
-		this.theta = theta;
-	}
-
-	public void setCostFlag(boolean costFlag) {
-		this.logFlag = costFlag;
-	}
 }
 
 class Wolfe {
@@ -135,7 +113,7 @@ class Wolfe {
 		model.compute(theta, 3);
 		float cost0 = model.getCost();// 初始cost
 		FloatMatrix g0 = model.getGradient();// 初始梯度
-		
+
 		FloatMatrix theta1 = theta.add(d.mul(alpha));// 求解最优步长因子 alpha
 		model.compute(theta1, 3);
 		float cost1 = model.getCost();
