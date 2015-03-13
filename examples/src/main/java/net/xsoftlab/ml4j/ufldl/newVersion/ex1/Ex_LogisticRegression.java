@@ -17,7 +17,7 @@ public class Ex_LogisticRegression extends TestUtil {
 	public static void main(String[] args) throws IOException {
 
 		tic();
-		
+
 		logger.info("加载数据...\n");
 		Map<String, FloatMatrix[]> map = MnistLoader.load(true);
 		FloatMatrix[] train = map.get("train");
@@ -40,6 +40,8 @@ public class Ex_LogisticRegression extends TestUtil {
 
 		logger.info("训练完成.\n\t theta = {} \n\t 训练集准确度 = {}% \n\t 测试集准确度 = {}%", new Object[] { theta, p, p1 });
 
+		// ufldl的测试集准确度为100%，而此处为99.95272%
+		// 是因为ufldl的程序里进行了%2.1f的输出控制，进行了四舍五入。
 		toc();
 	}
 }
