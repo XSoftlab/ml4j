@@ -36,7 +36,7 @@ public class Ex3_OneVsAll extends TestUtil {
 			logger.info("模型 {} 初始化...\n", i);
 			model = new LogisticRegression(X, y.eq(i));
 
-			logger.info("使用BFGS执行训练...\n");
+			logger.info("执行训练...\n");
 			minFunc = new BFGS(model, 50);
 			theta = minFunc.compute();
 			all_theta.putColumn(i - 1, theta);
