@@ -47,6 +47,7 @@ public class Ex3_OneVsAll_MultiThread extends TestUtil {
 		}
 
 		latch.await();// 等待全部线程执行结束
+		executor.shutdown();// 关闭线程池
 
 		logger.info("准确度测算...\n");
 		int[] index = X.mmul(all_theta).rowArgmaxs();
