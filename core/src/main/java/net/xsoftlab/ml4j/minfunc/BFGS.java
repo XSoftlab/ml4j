@@ -57,7 +57,7 @@ public class BFGS extends MinFunc {
 		FloatMatrix g0 = model.getGradient();// 初始梯度
 
 		float cost1, p, lamda;// lamda:一维搜索步长
-		FloatMatrix d, s, theta1, g1, yk, V, D1;// dk,sk,xk+1,gk
+		FloatMatrix d, s, g1, yk, V, D1;// dk,sk,xk+1,gk
 
 		if (logFlag)
 			logger.debug("迭代次数 \t\t步长 \t\t    cost");
@@ -67,9 +67,9 @@ public class BFGS extends MinFunc {
 			d = D0.neg().mmul(g0);// 确定搜索方向
 			lamda = Wolfe.lineSearch(model, theta, d);
 			s = d.mul(lamda);
-			theta1 = theta.add(s);
+			theta = theta.add(s);
 
-			model.compute(theta1, 3);
+			model.compute(theta, 3);
 			cost1 = model.getCost();
 			g1 = model.getGradient();
 
@@ -79,12 +79,12 @@ public class BFGS extends MinFunc {
 
 			if (g1.transpose().mmul(g1).get(0) < epsilon) {
 				logger.info("\n已达到梯度精度阀值.\n");
-				return theta1;
+				break;
 			}
 
 			if (cost0 - cost1 < epsilon) {
 				logger.info("\n已达到cost精度阀值.\n");
-				return theta1;
+				break;
 			}
 
 			yk = g1.sub(g0);
@@ -95,7 +95,6 @@ public class BFGS extends MinFunc {
 			g0 = g1;
 			D0 = D1;
 			cost0 = cost1;
-			theta = theta1;
 		}
 
 		return theta;

@@ -1,7 +1,6 @@
 package net.xsoftlab.ml4j.minfunc;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import net.xsoftlab.ml4j.model.BaseModel;
 
@@ -51,62 +50,83 @@ public class LBFGS extends MinFunc {
 	public FloatMatrix compute() {
 
 		int n = theta.length; // theat长度
-		FloatMatrix I = FloatMatrix.eye(n);// 单位矩阵
-		FloatMatrix D0 = I;// 初始化D0
+		FloatMatrix D0 = FloatMatrix.eye(n);// 单位矩阵
 
 		model.compute(theta, 3);
 		float cost0 = model.getCost();// 初始cost
-		FloatMatrix g0 = model.getGradient();// 初始梯度
+		FloatMatrix gk = model.getGradient();// 初始梯度
 
-		float cost1, p, lamda;// lamda:一维搜索步长
-		FloatMatrix d, sk, yk, theta1, g1, V, D1;// dk,sk,xk+1,gk
+		float cost1, lamda;// lamda:一维搜索步长
+		FloatMatrix d, sk, yk, gk1;// dk,sk,xk+1,gk
 
 		if (logFlag)
 			logger.debug("迭代次数 \t\t步长 \t\t    cost");
 
-		int m = 3;// limit
-		int delta, l;
+		int l, m = 20;// limit
+		float alpha, beta;
+		FloatMatrix ql;
+		FloatMatrix r0 = D0.mmul(gk);
 		LinkedList<FloatMatrix> sl = new LinkedList<FloatMatrix>();
 		LinkedList<FloatMatrix> yl = new LinkedList<FloatMatrix>();
+		LinkedList<Float> pl = new LinkedList<Float>();
+		Float[] alphal = new Float[m];
 
-		d = D0.neg().mmul(g0);// 确定搜索方向
 		for (int k = 0; k < maxIter; k++) {
 
+			l = k <= m ? k : m;
+			ql = gk;
+
+			for (int i = l - 1; i >= 0; i--) {
+				alpha = sl.get(i).transpose().mmul(ql).mul(pl.get(i)).get(0);
+				ql = ql.sub(yl.get(i).mul(alpha));
+				alphal[i] = alpha;
+			}
+
+			d = r0;
+			for (int i = 0; i < l; i++) {
+				beta = yl.get(i).transpose().mmul(d).mul(pl.get(i)).get(0);
+				d = sl.get(i).mul(alphal[i] - beta).add(d);
+			}
+
+			d = d.neg();
 			lamda = Wolfe.lineSearch(model, theta, d);
 			sk = d.mul(lamda);
-			theta1 = theta.add(sk);
+			theta = theta.add(sk);
 
-			model.compute(theta1, 3);
+			model.compute(theta, 3);
 			cost1 = model.getCost();
-			g1 = model.getGradient();
+			gk1 = model.getGradient();
 
 			if (logFlag) {
 				logger.debug("  {} \t   {}   \t {}", new Object[] { k + 1, cost0 - cost1, cost1 });
 			}
 
-			if (g1.transpose().mmul(g1).get(0) < epsilon) {
+			if (gk1.transpose().mmul(gk1).get(0) < epsilon) {
 				logger.info("\n已达到梯度精度阀值.\n");
-				return theta1;
+				break;
 			}
 
 			if (cost0 - cost1 < epsilon) {
 				logger.info("\n已达到cost精度阀值.\n");
-				return theta1;
+				break;
 			}
 
-			yk = g1.sub(g0);
-			p = 1f / yk.transpose().mmul(sk).get(0);
+			yk = gk1.sub(gk);
 
-			delta = k <= m ? 0 : k - m;
-			l = k <= m ? k : m;
+			yl.add(yk);
+			if (yl.size() > m)
+				yl.removeFirst();
 
-			V = I.sub(yk.mmul(sk.transpose()).mul(p));
-			D1 = V.transpose().mmul(D0).mmul(V).add(sk.mmul(sk.transpose()).mul(p));
+			sl.add(sk);
+			if (sl.size() > m)
+				sl.removeFirst();
 
-			g0 = g1;
-			D0 = D1;
+			pl.add(1f / yk.transpose().mmul(sk).get(0));
+			if (pl.size() > m)
+				pl.removeFirst();
+
+			gk = gk1;
 			cost0 = cost1;
-			theta = theta1;
 		}
 
 		return theta;

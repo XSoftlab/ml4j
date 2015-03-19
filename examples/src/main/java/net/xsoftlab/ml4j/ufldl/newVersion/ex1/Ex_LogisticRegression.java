@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import net.xsoftlab.ml4j.minfunc.BFGS;
+import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
 import net.xsoftlab.ml4j.util.MatrixUtil;
@@ -26,13 +27,10 @@ public class Ex_LogisticRegression extends TestUtil {
 		logger.info("模型初始化...\n");
 		BaseModel model = new LogisticRegression(train[0], train[1]);
 
-		// logger.info("使用梯度下降执行训练...\n");
-		// GradientDescent gd = new GradientDescent(model, 100f);
-		// FloatMatrix theta = gd.compute();
-
-		logger.info("使用BFGS执行训练...\n");
-		BFGS bfgs = new BFGS(model);
-		FloatMatrix theta = bfgs.compute();
+		logger.info("执行训练...\n");
+		// MinFunc minFunc =new GradientDescent(model, 100f);
+		MinFunc minFunc = new BFGS(model);
+		FloatMatrix theta = minFunc.compute();
 
 		logger.info("准确度测算...\n");
 		float p = MatrixUtil.sigmoid(train[0].mmul(theta)).ge(0.5f).eq(train[1]).mean() * 100;
