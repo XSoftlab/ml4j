@@ -1,16 +1,19 @@
 package net.xsoftlab.ml4j.minfunc;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import net.xsoftlab.ml4j.model.BaseModel;
 
 import org.jblas.FloatMatrix;
 
 /**
- * BFGS
+ * LBFGS
  * 
  * @author 王彦超
  *
  */
-public class BFGS extends MinFunc {
+public class LBFGS extends MinFunc {
 
 	/**
 	 * 初始化
@@ -18,7 +21,7 @@ public class BFGS extends MinFunc {
 	 * @param model
 	 *            训练模型
 	 */
-	public BFGS(BaseModel model) {
+	public LBFGS(BaseModel model) {
 		super();
 		this.model = model;
 
@@ -33,7 +36,7 @@ public class BFGS extends MinFunc {
 	 * @param maxIter
 	 *            最大训练次数
 	 */
-	public BFGS(BaseModel model, int maxIter) {
+	public LBFGS(BaseModel model, int maxIter) {
 
 		this(model);
 		this.maxIter = maxIter;
@@ -43,7 +46,6 @@ public class BFGS extends MinFunc {
 	 * 最优化theta
 	 * 
 	 * @return theta
-	 * @see http://blog.csdn.net/itplus/article/details/21897443
 	 */
 	@Override
 	public FloatMatrix compute() {
@@ -57,17 +59,22 @@ public class BFGS extends MinFunc {
 		FloatMatrix g0 = model.getGradient();// 初始梯度
 
 		float cost1, p, lamda;// lamda:一维搜索步长
-		FloatMatrix d, s, theta1, g1, yk, V, D1;// dk,sk,xk+1,gk
+		FloatMatrix d, sk, yk, theta1, g1, V, D1;// dk,sk,xk+1,gk
 
 		if (logFlag)
 			logger.debug("迭代次数 \t\t步长 \t\t    cost");
 
+		int m = 3;// limit
+		int delta, l;
+		LinkedList<FloatMatrix> sl = new LinkedList<FloatMatrix>();
+		LinkedList<FloatMatrix> yl = new LinkedList<FloatMatrix>();
+
+		d = D0.neg().mmul(g0);// 确定搜索方向
 		for (int k = 0; k < maxIter; k++) {
 
-			d = D0.neg().mmul(g0);// 确定搜索方向
 			lamda = Wolfe.lineSearch(model, theta, d);
-			s = d.mul(lamda);
-			theta1 = theta.add(s);
+			sk = d.mul(lamda);
+			theta1 = theta.add(sk);
 
 			model.compute(theta1, 3);
 			cost1 = model.getCost();
@@ -88,9 +95,13 @@ public class BFGS extends MinFunc {
 			}
 
 			yk = g1.sub(g0);
-			p = 1f / yk.transpose().mmul(s).get(0);
-			V = I.sub(yk.mmul(s.transpose()).mul(p));
-			D1 = V.transpose().mmul(D0).mmul(V).add(s.mmul(s.transpose()).mul(p));
+			p = 1f / yk.transpose().mmul(sk).get(0);
+
+			delta = k <= m ? 0 : k - m;
+			l = k <= m ? k : m;
+
+			V = I.sub(yk.mmul(sk.transpose()).mul(p));
+			D1 = V.transpose().mmul(D0).mmul(V).add(sk.mmul(sk.transpose()).mul(p));
 
 			g0 = g1;
 			D0 = D1;
