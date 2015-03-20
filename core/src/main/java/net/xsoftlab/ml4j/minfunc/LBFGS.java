@@ -62,10 +62,9 @@ public class LBFGS extends MinFunc {
 		if (logFlag)
 			logger.debug("迭代次数 \t\t步长 \t\t    cost");
 
-		int l, m = 20;// limit
+		int l, m = 3;// limit
 		float alpha, beta;
 		FloatMatrix ql;
-		FloatMatrix r0 = D0.mmul(gk);
 		LinkedList<FloatMatrix> sl = new LinkedList<FloatMatrix>();
 		LinkedList<FloatMatrix> yl = new LinkedList<FloatMatrix>();
 		LinkedList<Float> pl = new LinkedList<Float>();
@@ -82,7 +81,7 @@ public class LBFGS extends MinFunc {
 				alphal[i] = alpha;
 			}
 
-			d = r0;
+			d = D0.mmul(ql);
 			for (int i = 0; i < l; i++) {
 				beta = yl.get(i).transpose().mmul(d).mul(pl.get(i)).get(0);
 				d = sl.get(i).mul(alphal[i] - beta).add(d);

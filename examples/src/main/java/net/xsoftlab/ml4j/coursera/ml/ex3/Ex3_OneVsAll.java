@@ -2,7 +2,7 @@ package net.xsoftlab.ml4j.coursera.ml.ex3;
 
 import java.io.IOException;
 
-import net.xsoftlab.ml4j.minfunc.BFGS;
+import net.xsoftlab.ml4j.minfunc.LBFGS;
 import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
@@ -37,7 +37,7 @@ public class Ex3_OneVsAll extends TestUtil {
 			model = new LogisticRegression(X, y.eq(i));
 
 			logger.info("执行训练...\n");
-			minFunc = new BFGS(model, 50);
+			minFunc = new LBFGS(model, 50);
 			theta = minFunc.compute();
 			all_theta.putColumn(i - 1, theta);
 		}

@@ -85,7 +85,7 @@ public class NeuralNetworks extends BaseModel {
 
 		FloatMatrix Y = FloatMatrix.zeros(a3.rows, a3.columns);
 		for (int i = 0; i < numLabels; i++)
-			Y.putColumn(i, y.eq(i + 1));
+			Y.putColumn(i, y.eq(i));
 
 		if (flag == 1 || flag == 3) {
 			// -Y .* log(a3)
