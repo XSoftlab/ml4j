@@ -49,9 +49,6 @@ public class LBFGS extends MinFunc {
 	@Override
 	public FloatMatrix compute() {
 
-		int n = theta.length; // theat长度
-		FloatMatrix D0 = FloatMatrix.eye(n);// 单位矩阵
-
 		model.compute(theta, 3);
 		float cost0 = model.getCost();// 初始cost
 		FloatMatrix gk = model.getGradient();// 初始梯度
@@ -81,7 +78,7 @@ public class LBFGS extends MinFunc {
 				alphal[i] = alpha;
 			}
 
-			d = D0.mmul(ql);
+			d = ql;
 			for (int i = 0; i < l; i++) {
 				beta = yl.get(i).transpose().mmul(d).mul(pl.get(i)).get(0);
 				d = sl.get(i).mul(alphal[i] - beta).add(d);

@@ -3,7 +3,7 @@ package net.xsoftlab.ml4j.ufldl.newVersion.ex1;
 import java.io.IOException;
 import java.util.Map;
 
-import net.xsoftlab.ml4j.minfunc.BFGS;
+import net.xsoftlab.ml4j.minfunc.LBFGS;
 import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
@@ -29,7 +29,7 @@ public class Ex_LogisticRegression extends TestUtil {
 
 		logger.info("执行训练...\n");
 		// MinFunc minFunc =new GradientDescent(model, 100f);
-		MinFunc minFunc = new BFGS(model);
+		MinFunc minFunc = new LBFGS(model);
 		FloatMatrix theta = minFunc.compute();
 
 		logger.info("准确度测算...\n");
