@@ -38,7 +38,7 @@ public class Ex3_OneVsAll extends TestUtil {
 
 			logger.info("执行训练...\n");
 			minFunc = new LBFGS(model, 50);
-			theta = minFunc.compute();
+			theta = minFunc.train();
 			all_theta.putColumn(i - 1, theta);
 		}
 

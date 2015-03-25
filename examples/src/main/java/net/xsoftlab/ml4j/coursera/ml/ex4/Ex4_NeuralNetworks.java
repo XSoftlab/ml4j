@@ -43,24 +43,10 @@ public class Ex4_NeuralNetworks extends TestUtil {
 
 		logger.info("执行训练...\n");
 		MinFunc minFunc = new LBFGS(model);
-		FloatMatrix theta = minFunc.compute();
-
-		FloatMatrix theta1 = theta.getRange(0, (inputLayerSize + 1) * hiddenLayerSize);
-		FloatMatrix theta2 = theta.getRange((inputLayerSize + 1) * hiddenLayerSize, theta.length);
-		theta1 = theta1.reshape(hiddenLayerSize, inputLayerSize + 1);
-		theta2 = theta2.reshape(numLabels, hiddenLayerSize + 1);
+		FloatMatrix theta = minFunc.train();
 
 		logger.info("准确度测算...\n");
-		FloatMatrix h1 = MatrixUtil.sigmoid(X.mmul(theta1.transpose()));
-		h1 = MatrixUtil.addIntercept(h1);
-		FloatMatrix h2 = MatrixUtil.sigmoid(h1.mmul(theta2.transpose()));
-		int[] index = h2.rowArgmaxs();
-		float[] pred = new float[index.length];
-
-		for (int i = 0; i < index.length; i++)
-			pred[i] = index[i];
-
-		float p = y.eq(new FloatMatrix(pred)).mean() * 100;
+		float p = model.evaluate(theta);
 
 		logger.info("训练完成.\n\t 准确度 = {}% \n", new Object[] { p });
 		toc();

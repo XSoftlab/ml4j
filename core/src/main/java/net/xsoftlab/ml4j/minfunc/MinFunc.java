@@ -28,7 +28,7 @@ public abstract class MinFunc {
 	 * 
 	 * @return theta
 	 */
-	public abstract FloatMatrix compute();
+	public abstract FloatMatrix train();
 
 	public void setEpsilon(float epsilon) {
 		this.epsilon = epsilon;

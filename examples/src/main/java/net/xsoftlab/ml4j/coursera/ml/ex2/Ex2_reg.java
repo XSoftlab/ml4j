@@ -30,10 +30,10 @@ public class Ex2_reg extends TestUtil {
 		logger.info("使用BFGS执行训练...\n");
 		// MinFunc minFunc = new BFGS(model);
 		MinFunc minFunc = new GradientDescent(model, 1f);
-		FloatMatrix theta = minFunc.compute();
+		FloatMatrix theta = minFunc.train();
 
 		logger.info("准确度测算...\n");
-		float p = MatrixUtil.sigmoid(x.mmul(theta)).ge(0.5f).eq(matrixs[1]).mean() * 100;
+		float p = model.evaluate(theta);
 
 		logger.info("训练完成.\n\t theta = {} \n\t 准确度 = {}%", new Object[] { theta, p });
 

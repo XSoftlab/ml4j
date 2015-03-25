@@ -87,7 +87,7 @@ class OneVsAllThread implements Runnable {
 	public void run() {
 
 		minFunc = new BFGS(model);
-		theta = minFunc.compute();
+		theta = minFunc.train();
 		synchronized (all_theta) {
 			all_theta.putColumn(i - 1, theta);
 		}

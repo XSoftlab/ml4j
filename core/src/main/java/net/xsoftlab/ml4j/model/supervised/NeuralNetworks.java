@@ -128,6 +128,34 @@ public class NeuralNetworks extends BaseModel {
 	}
 
 	@Override
+	public float evaluate(FloatMatrix theta) {
+
+		return evaluate(theta, x, y);
+	}
+
+	@Override
+	public float evaluate(FloatMatrix theta, FloatMatrix x, FloatMatrix y) {
+
+		FloatMatrix theta1 = theta.getRange(0, (inputLayerSize + 1) * hiddenLayerSize);
+		FloatMatrix theta2 = theta.getRange((inputLayerSize + 1) * hiddenLayerSize, theta.length);
+		theta1 = theta1.reshape(hiddenLayerSize, inputLayerSize + 1);
+		theta2 = theta2.reshape(numLabels, hiddenLayerSize + 1);
+
+		FloatMatrix h1 = MatrixUtil.sigmoid(x.mmul(theta1.transpose()));
+		h1 = MatrixUtil.addIntercept(h1);
+		FloatMatrix h2 = MatrixUtil.sigmoid(h1.mmul(theta2.transpose()));
+		int[] index = h2.rowArgmaxs();
+		float[] pred = new float[index.length];
+
+		for (int i = 0; i < index.length; i++)
+			pred[i] = index[i];
+
+		float p = y.eq(new FloatMatrix(pred)).mean() * 100;
+
+		return p;
+	}
+
+	@Override
 	public FloatMatrix getInitTheta() {
 
 		FloatMatrix initialTheta1 = randInitializeWeights(inputLayerSize, hiddenLayerSize);

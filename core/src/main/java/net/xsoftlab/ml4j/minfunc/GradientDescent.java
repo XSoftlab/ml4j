@@ -46,13 +46,8 @@ public class GradientDescent extends MinFunc {
 		this.maxIter = maxIter;
 	}
 
-	/**
-	 * 最优化theta
-	 * 
-	 * @return theta
-	 */
 	@Override
-	public FloatMatrix compute() {
+	public FloatMatrix train() {
 
 		float step, cost0 = 0, cost1 = 0;
 

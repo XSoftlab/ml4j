@@ -30,6 +30,28 @@ public abstract class BaseModel {
 	public abstract void compute(FloatMatrix theta, int flag);
 
 	/**
+	 * 准确度评测
+	 * 
+	 * @param theta
+	 *            训练好的theta
+	 * @return 准确度
+	 */
+	public abstract float evaluate(FloatMatrix theta);
+
+	/**
+	 * 准确度评测
+	 * 
+	 * @param theta
+	 *            训练好的theta
+	 * @param x
+	 *            测试集
+	 * @param y
+	 *            标签
+	 * @return 准确度
+	 */
+	public abstract float evaluate(FloatMatrix theta, FloatMatrix x, FloatMatrix y);
+
+	/**
 	 * 获取初始theta值
 	 * 
 	 * @return theta

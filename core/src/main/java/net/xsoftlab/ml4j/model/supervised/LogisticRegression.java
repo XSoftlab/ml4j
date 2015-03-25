@@ -81,9 +81,21 @@ public class LogisticRegression extends BaseModel {
 	}
 
 	@Override
+	public float evaluate(FloatMatrix theta) {
+		
+		return evaluate(theta, x, y);
+	}
+
+	@Override
+	public float evaluate(FloatMatrix theta, FloatMatrix x, FloatMatrix y) {
+		
+		FloatMatrix y1 = MatrixUtil.sigmoid(x.mmul(theta));
+		return y1.ge(0.5f).eq(y).mean() * 100;
+	}
+
+	@Override
 	public FloatMatrix getInitTheta() {
 
 		return FloatMatrix.rand(x.columns, 1).mul(0.001f);
 	}
-
 }

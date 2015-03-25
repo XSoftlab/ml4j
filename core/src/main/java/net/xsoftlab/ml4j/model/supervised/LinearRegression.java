@@ -1,6 +1,7 @@
 package net.xsoftlab.ml4j.model.supervised;
 
 import net.xsoftlab.ml4j.model.BaseModel;
+import net.xsoftlab.ml4j.util.MathUtil;
 
 import org.jblas.FloatMatrix;
 
@@ -60,7 +61,7 @@ public class LinearRegression extends BaseModel {
 			}
 			cost = 1f / (2 * m) * cost;
 		}
-		
+
 		if (flag == 2 || flag == 3) {
 			FloatMatrix h1 = x.transpose().mmul(h);// x' * h * (alpha / m)
 			FloatMatrix h2 = h1.add(theta.mul(lambda));
@@ -71,6 +72,18 @@ public class LinearRegression extends BaseModel {
 			}
 			this.gradient = h2.div(m);
 		}
+	}
+
+	@Override
+	public float evaluate(FloatMatrix theta) {
+
+		return evaluate(theta, x, y);
+	}
+
+	@Override
+	public float evaluate(FloatMatrix theta, FloatMatrix x, FloatMatrix y) {
+
+		return MathUtil.std(x.mmul(theta), y);
 	}
 
 	@Override

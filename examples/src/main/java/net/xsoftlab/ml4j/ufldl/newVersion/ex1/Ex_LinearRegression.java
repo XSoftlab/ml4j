@@ -7,7 +7,6 @@ import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LinearRegression;
 import net.xsoftlab.ml4j.util.FeatureNormalize;
-import net.xsoftlab.ml4j.util.MathUtil;
 import net.xsoftlab.ml4j.util.MatrixUtil;
 import net.xsoftlab.ml4j.util.TestUtil;
 
@@ -50,13 +49,13 @@ public class Ex_LinearRegression extends TestUtil {
 		logger.info("执行训练...\n");
 		// MinFunc minFunc = new GradientDescent(model, 0.3f);
 		MinFunc minFunc = new LBFGS(model);
-		FloatMatrix theta = minFunc.compute();
+		FloatMatrix theta = minFunc.train();
 
 		logger.info("计算训练集均方差...\n");
-		float trainRms = MathUtil.std(train_x.mmul(theta), train_y);
+		float trainRms = model.evaluate(theta);
 
 		logger.info("计算测试集均方差...\n");
-		float testRms = MathUtil.std(test_x.mmul(theta), test_y);
+		float testRms = model.evaluate(theta, test_x, test_y);
 
 		logger.info("训练完成.\n\t theta = {} \n\t trainRms = {}\n\t testRms = {}\n", new Object[] { theta, trainRms,
 				testRms });

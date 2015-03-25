@@ -41,13 +41,8 @@ public class LBFGS extends MinFunc {
 		this.maxIter = maxIter;
 	}
 
-	/**
-	 * 最优化theta
-	 * 
-	 * @return theta
-	 */
 	@Override
-	public FloatMatrix compute() {
+	public FloatMatrix train() {
 
 		model.compute(theta, 3);
 		float cost0 = model.getCost();// 初始cost

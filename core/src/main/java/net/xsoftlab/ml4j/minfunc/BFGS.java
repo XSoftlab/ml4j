@@ -39,14 +39,9 @@ public class BFGS extends MinFunc {
 		this.maxIter = maxIter;
 	}
 
-	/**
-	 * 最优化theta
-	 * 
-	 * @return theta
-	 * @see http://blog.csdn.net/itplus/article/details/21897443
-	 */
+	// @see http://blog.csdn.net/itplus/article/details/21897443
 	@Override
-	public FloatMatrix compute() {
+	public FloatMatrix train() {
 
 		int n = theta.length; // theat长度
 		FloatMatrix I = FloatMatrix.eye(n);// 单位矩阵
