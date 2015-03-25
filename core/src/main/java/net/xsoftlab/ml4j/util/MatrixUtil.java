@@ -1,14 +1,12 @@
 package net.xsoftlab.ml4j.util;
 
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,22 +30,26 @@ public class MatrixUtil {
 	public static Logger logger = LoggerFactory.getLogger(MatrixUtil.class);
 
 	/**
-	 * 将数据保存到文件
+	 * 将数据保存到文件 - 由于原FloatMartix 的save方法有bug,暂时在这自己封装一个
 	 * 
 	 * @param fileName
 	 *            文件路径
 	 */
-	public static void saveData(FloatMatrix matrix, String fileName) throws IOException {
+	public static void save(FloatMatrix matrix, String fileName) throws IOException {
 
-		File file = new File(fileName); // 创建文件
-		Writer writer = null;
-		try {
-			writer = new OutputStreamWriter(new FileOutputStream(file)); // 打开文件输出流
-			writer.write(matrix.toString()); // 写入文件
-		} finally {
-			if (writer != null)
-				writer.close();
+		DataOutputStream dos = new DataOutputStream(new FileOutputStream(fileName, false));
+		dos.writeUTF("float");
+		dos.writeInt(matrix.columns);
+		dos.writeInt(matrix.rows);
+
+		float[] data = matrix.data;
+
+		dos.writeInt(data.length);
+		for (int i = 0; i < data.length; i++) {
+			dos.writeFloat(data[i]);
 		}
+
+		dos.close();
 	}
 
 	/**

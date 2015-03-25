@@ -16,7 +16,11 @@ public class TestUtil {
 	}
 
 	public static void toc() {
-
-		logger.info("用时 {}s\n", (System.currentTimeMillis() - time) / 1000f);
+		int h, m, s;
+		long useTime = (System.currentTimeMillis() - time) / 1000;
+		h = (int) (useTime / 3600);
+		m = (int) (useTime / 60);
+		s = (int) (useTime % 60);
+		logger.info("用时: {} 小时, {} 分钟, {} 秒.\n", new Object[] { h, m, s });
 	}
 }
