@@ -128,6 +128,12 @@ public class NeuralNetworks extends BaseModel {
 	}
 
 	@Override
+	public void checkGradients() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public float evaluate(FloatMatrix theta) {
 
 		return evaluate(theta, x, y);

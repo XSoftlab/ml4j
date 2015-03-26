@@ -81,14 +81,20 @@ public class LogisticRegression extends BaseModel {
 	}
 
 	@Override
+	public void checkGradients() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
 	public float evaluate(FloatMatrix theta) {
-		
+
 		return evaluate(theta, x, y);
 	}
 
 	@Override
 	public float evaluate(FloatMatrix theta, FloatMatrix x, FloatMatrix y) {
-		
+
 		FloatMatrix y1 = MatrixUtil.sigmoid(x.mmul(theta));
 		return y1.ge(0.5f).eq(y).mean() * 100;
 	}
