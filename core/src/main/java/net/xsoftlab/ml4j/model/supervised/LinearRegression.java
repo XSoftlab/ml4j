@@ -1,7 +1,7 @@
 package net.xsoftlab.ml4j.model.supervised;
 
 import net.xsoftlab.ml4j.model.BaseModel;
-import net.xsoftlab.ml4j.util.MathUtil;
+import net.xsoftlab.ml4j.util.MatrixUtil;
 
 import org.jblas.FloatMatrix;
 
@@ -75,12 +75,6 @@ public class LinearRegression extends BaseModel {
 	}
 
 	@Override
-	public void checkGradients() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public float evaluate(FloatMatrix theta) {
 
 		return evaluate(theta, x, y);
@@ -89,7 +83,7 @@ public class LinearRegression extends BaseModel {
 	@Override
 	public float evaluate(FloatMatrix theta, FloatMatrix x, FloatMatrix y) {
 
-		return MathUtil.std(x.mmul(theta), y);
+		return MatrixUtil.std(x.mmul(theta), y);
 	}
 
 	@Override

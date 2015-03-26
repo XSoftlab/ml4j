@@ -18,7 +18,6 @@ public abstract class BaseModel {
 	protected float cost;// cost
 	protected FloatMatrix gradient;// 梯度
 
-	protected float epsilon = 1e-4f;// 梯度校验区间
 	protected boolean checkFlag = false;// 梯度校验开关
 
 	/**
@@ -31,11 +30,6 @@ public abstract class BaseModel {
 	 * @return 梯度/cost
 	 */
 	public abstract void compute(FloatMatrix theta, int flag);
-
-	/**
-	 * 梯度校验
-	 */
-	public abstract void checkGradients();
 
 	/**
 	 * 准确度评测

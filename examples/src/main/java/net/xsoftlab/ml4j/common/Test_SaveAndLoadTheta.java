@@ -13,14 +13,20 @@ import net.xsoftlab.ml4j.util.TestUtil;
 
 import org.jblas.FloatMatrix;
 
-public class Test_SaveAndLoadData extends TestUtil {
+/**
+ * 测试保存和加载Theta
+ * 
+ * @author 王彦超
+ *
+ */
+public class Test_SaveAndLoadTheta extends TestUtil {
 
 	public static void main(String[] args) throws IOException {
-		
+
 		String path = "d:/data/theta.data";
-		
+
 		tic();
-		
+
 		saveTheta(path);
 		loadTheta(path);
 
@@ -49,7 +55,7 @@ public class Test_SaveAndLoadData extends TestUtil {
 	}
 
 	public static void saveTheta(String path) throws IOException {
-		
+
 		logger.info("加载数据...\n");
 		Map<String, FloatMatrix[]> map = MnistLoader.load(true);
 		FloatMatrix[] train = map.get("train");

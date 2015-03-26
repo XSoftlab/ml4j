@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.xsoftlab.ml4j.util.FeatureNormalize;
+import net.xsoftlab.ml4j.common.FeatureNormalize;
 import net.xsoftlab.ml4j.util.MatrixUtil;
 
 import org.jblas.FloatMatrix;
@@ -57,7 +57,7 @@ public class MnistLoader extends TestUtil {
 		}
 
 		// Randomly shuffle the data
-		int[] rindices = MatrixUtil.randperm(train_y.length);
+		int[] rindices = MathUtil.randperm(train_y.length);
 		train_X = train_X.getRows(rindices);
 		train_y = train_y.getRows(rindices);
 		// We standardize the data so that each pixel will have roughly zero
@@ -83,7 +83,7 @@ public class MnistLoader extends TestUtil {
 		}
 
 		// Randomly shuffle the data
-		rindices = MatrixUtil.randperm(test_y.length);
+		rindices = MathUtil.randperm(test_y.length);
 		test_X = test_X.getRows(rindices);
 		test_y = test_y.getRows(rindices);
 		// Standardize using the same mean and scale as the training data.

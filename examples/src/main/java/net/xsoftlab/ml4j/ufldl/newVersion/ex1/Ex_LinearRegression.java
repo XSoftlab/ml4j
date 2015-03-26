@@ -2,11 +2,11 @@ package net.xsoftlab.ml4j.ufldl.newVersion.ex1;
 
 import java.io.IOException;
 
+import net.xsoftlab.ml4j.common.FeatureNormalize;
 import net.xsoftlab.ml4j.minfunc.LBFGS;
 import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LinearRegression;
-import net.xsoftlab.ml4j.util.FeatureNormalize;
 import net.xsoftlab.ml4j.util.MatrixUtil;
 import net.xsoftlab.ml4j.util.TestUtil;
 

@@ -1,4 +1,6 @@
-package net.xsoftlab.ml4j.util;
+package net.xsoftlab.ml4j.common;
+
+import net.xsoftlab.ml4j.util.MatrixUtil;
 
 import org.jblas.FloatMatrix;
 
@@ -42,7 +44,7 @@ public class FeatureNormalize {
 		this.intercept = intercept;
 
 		mu = data.columnMeans();
-		sigma = MathUtil.std(data, 1);
+		sigma = MatrixUtil.std(data, 1);
 		if (intercept)
 			data_normal = new FloatMatrix(data.rows, data.columns + 1);
 		else
