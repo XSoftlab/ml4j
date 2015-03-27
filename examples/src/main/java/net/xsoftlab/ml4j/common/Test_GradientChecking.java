@@ -23,6 +23,8 @@ public class Test_GradientChecking extends TestUtil {
 	public static void main(String[] args) throws IOException {
 
 		TestLinearRegression();
+		
+		TestLogisticRegression();
 	}
 
 	public static void TestLinearRegression() throws IOException {
