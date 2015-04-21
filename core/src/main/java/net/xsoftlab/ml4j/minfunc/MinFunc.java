@@ -1,6 +1,6 @@
 package net.xsoftlab.ml4j.minfunc;
 
-import net.xsoftlab.ml4j.model.BaseModel;
+import net.xsoftlab.ml4j.model.supervised.BaseModel;
 
 import org.jblas.FloatMatrix;
 import org.slf4j.Logger;

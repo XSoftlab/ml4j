@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import net.xsoftlab.ml4j.minfunc.GradientDescent;
 import net.xsoftlab.ml4j.minfunc.MinFunc;
-import net.xsoftlab.ml4j.model.BaseModel;
+import net.xsoftlab.ml4j.model.supervised.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LinearRegression;
 import net.xsoftlab.ml4j.util.MatrixUtil;
 import net.xsoftlab.ml4j.util.TestUtil;

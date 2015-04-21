@@ -2,7 +2,7 @@ package net.xsoftlab.ml4j.minfunc;
 
 import java.util.LinkedList;
 
-import net.xsoftlab.ml4j.model.BaseModel;
+import net.xsoftlab.ml4j.model.supervised.BaseModel;
 
 import org.jblas.FloatMatrix;
 

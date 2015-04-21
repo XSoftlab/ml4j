@@ -3,7 +3,7 @@ package net.xsoftlab.ml4j.common;
 import java.io.IOException;
 import java.util.Map;
 
-import net.xsoftlab.ml4j.model.BaseModel;
+import net.xsoftlab.ml4j.model.supervised.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LinearRegression;
 import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
 import net.xsoftlab.ml4j.util.MatrixUtil;

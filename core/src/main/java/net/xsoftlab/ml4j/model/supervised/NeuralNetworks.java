@@ -1,6 +1,5 @@
 package net.xsoftlab.ml4j.model.supervised;
 
-import net.xsoftlab.ml4j.model.BaseModel;
 import net.xsoftlab.ml4j.util.MatrixUtil;
 
 import org.jblas.FloatMatrix;
@@ -31,7 +30,7 @@ public class NeuralNetworks extends BaseModel {
 	 * @param numLabels
 	 *            标签个数
 	 * @param x
-	 *            特征值
+	 *            特征矩阵
 	 * @param y
 	 *            标签
 	 */
@@ -56,7 +55,7 @@ public class NeuralNetworks extends BaseModel {
 	 * @param numLabels
 	 *            标签个数
 	 * @param x
-	 *            特征值
+	 *            特征矩阵
 	 * @param y
 	 *            标签
 	 * @param lambda

@@ -5,7 +5,7 @@ import java.util.Map;
 
 import net.xsoftlab.ml4j.minfunc.LBFGS;
 import net.xsoftlab.ml4j.minfunc.MinFunc;
-import net.xsoftlab.ml4j.model.BaseModel;
+import net.xsoftlab.ml4j.model.supervised.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.NeuralNetworks;
 import net.xsoftlab.ml4j.util.MnistLoader;
 import net.xsoftlab.ml4j.util.TestUtil;

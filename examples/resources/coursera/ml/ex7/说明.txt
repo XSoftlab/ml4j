@@ -1,0 +1,8 @@
+说明：由于文件较大,请到以下地址下载。
+地址：http://pan.baidu.com/s/1dDzsV5Z
+
+如果本地装有matlab,并有coursera的mlclass-ex7,可在项目空间执行如下命令
+>> load('ex7data2.mat')
+>> save kmeans.data X -ascii
+
+然后将保存的文件copy到本文件夹。
