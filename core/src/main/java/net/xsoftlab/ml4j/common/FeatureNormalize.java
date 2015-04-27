@@ -17,7 +17,7 @@ public class FeatureNormalize {
 	private FloatMatrix mu;// 平均值
 	private FloatMatrix sigma;// 标准差
 	private FloatMatrix temp;
-	private boolean intercept = true;
+	private boolean intercept = false;
 
 	/**
 	 * 初始化
@@ -27,7 +27,7 @@ public class FeatureNormalize {
 	 */
 	public FeatureNormalize(FloatMatrix data) {
 
-		this(data, true);
+		this(data, false);
 	}
 
 	/**
@@ -91,10 +91,7 @@ public class FeatureNormalize {
 		} else {
 			for (int i = 0; i < data.columns; i++) {
 				temp = data.getColumn(i).sub(mu.get(i));// data[i] - mu[i]
-				if (sigma.get(i) == 0) {
-					data_normal.putColumn(i + 1, temp);
-				} else
-					data_normal.putColumn(i + 1, temp.div(sigma.get(i)));
+				data_normal.putColumn(i, temp.div(sigma.get(i)));
 			}
 		}
 

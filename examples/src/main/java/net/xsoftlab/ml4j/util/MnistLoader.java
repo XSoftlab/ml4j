@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.xsoftlab.ml4j.common.FeatureNormalize;
-import net.xsoftlab.ml4j.util.MatrixUtil;
 
 import org.jblas.FloatMatrix;
 
@@ -62,7 +61,7 @@ public class MnistLoader extends TestUtil {
 		train_y = train_y.getRows(rindices);
 		// We standardize the data so that each pixel will have roughly zero
 		// mean and unit variance.
-		FeatureNormalize normalize = new FeatureNormalize(train_X);
+		FeatureNormalize normalize = new FeatureNormalize(train_X, true);
 		train_X = normalize.normalize();
 		train[0] = train_X;
 		train[1] = train_y;

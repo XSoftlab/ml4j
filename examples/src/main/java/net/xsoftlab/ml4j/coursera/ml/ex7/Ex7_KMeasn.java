@@ -22,7 +22,7 @@ public class Ex7_KMeasn extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		String path = RESOURCES_PATH + "/coursera/ml/ex7/kmeans.data";
+		String path = RESOURCES_PATH + "/coursera/ml/ex7/ex7data2.data";
 		FloatMatrix X = MatrixUtil.loadData(path, "\\s+");
 
 		logger.info("模型初始化...\n");

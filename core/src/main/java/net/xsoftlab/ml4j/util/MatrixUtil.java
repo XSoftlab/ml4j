@@ -110,7 +110,8 @@ public class MatrixUtil {
 				if (numColumns < 0)
 					numColumns = data.length;
 				else if (data.length != numColumns) {
-					Ml4jException.logAndThrowException("数据列大小不一致");
+					Ml4jException.logAndThrowException("数据列大小不一致data.length = " + data.length + ",numColumns = "
+							+ numColumns + ",line = " + line + "");
 				}
 
 				list.add(convert(data, intercept));

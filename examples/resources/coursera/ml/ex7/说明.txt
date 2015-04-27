@@ -2,7 +2,13 @@
 地址：http://pan.baidu.com/s/1dDzsV5Z
 
 如果本地装有matlab,并有coursera的mlclass-ex7,可在项目空间执行如下命令
+>> load('ex7data1.mat')
+>> save ex7data1.data X -ascii
+
 >> load('ex7data2.mat')
->> save kmeans.data X -ascii
+>> save ex7data2.data X -ascii
+
+>> load('ex7faces.mat')
+>> save ex7faces.data X -ascii
 
 然后将保存的文件copy到本文件夹。
