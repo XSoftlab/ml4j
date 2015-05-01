@@ -14,7 +14,7 @@ public class Ex7_PCA extends TestUtil {
 	public static void part1() throws IOException {
 
 		logger.info("加载数据...\n");
-		String path = RESOURCES_PATH + "/coursera/ml/ex7/ex7data1.data";
+		String path = COURSE_ML_PATH + "/ex7/ex7data1.data";
 		FloatMatrix X = MatrixUtil.loadData(path, "\\s+");
 
 		logger.info("执行特征标准化...\n");
@@ -37,7 +37,7 @@ public class Ex7_PCA extends TestUtil {
 	public static void part2() throws IOException {
 
 		logger.info("加载数据...\n");
-		String path = RESOURCES_PATH + "/coursera/ml/ex7/ex7faces.data";
+		String path = COURSE_ML_PATH + "/ex7/ex7faces.data";
 		FloatMatrix X = MatrixUtil.loadData(path, "\\s+");
 
 		logger.info("执行特征标准化...\n");

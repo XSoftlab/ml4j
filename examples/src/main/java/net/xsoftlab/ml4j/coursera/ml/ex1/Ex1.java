@@ -19,7 +19,7 @@ public class Ex1 extends TestUtil {
 
 		logger.info("加载数据...\n");
 
-		String path = RESOURCES_PATH + "/coursera/ml/ex1/ex1data1.txt";
+		String path = COURSE_ML_PATH + "/ex1/ex1data1.txt";
 		FloatMatrix[] matrixs = MatrixUtil.loadDataWithXY(path, ",", true);
 
 		logger.info("模型初始化...\n");

@@ -19,7 +19,7 @@ public class Ex_LinearRegression extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		String path = RESOURCES_PATH + "/ufldl/newVersion/ex1/housing.data";
+		String path = UFLDL_NEW_PATH + "/ex1/housing.data";
 		FloatMatrix matrix = MatrixUtil.loadData(path, "\\s+", false);
 
 		logger.info("打乱数据...\n");

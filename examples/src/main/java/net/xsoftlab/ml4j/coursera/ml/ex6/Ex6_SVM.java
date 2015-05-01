@@ -44,8 +44,8 @@ public class Ex6_SVM extends TestUtil {
 		tic();
 
 		logger.info("加载训练数据...\n");
-		String x_path = RESOURCES_PATH + "/coursera/ml/ex6/X.data";
-		String y_path = RESOURCES_PATH + "/coursera/ml/ex6/y.data";
+		String x_path = COURSE_ML_PATH + "/ex6/X.data";
+		String y_path = COURSE_ML_PATH + "/ex6/y.data";
 		Node[][] X = SVMUtil.loadX(x_path, "\\s+");
 		double[] y = SVMUtil.loadY(y_path);
 
@@ -54,8 +54,8 @@ public class Ex6_SVM extends TestUtil {
 		Model model = train(problem);
 
 		logger.info("加载测试数据...\n");
-		String test_x_path = RESOURCES_PATH + "/coursera/ml/ex6/Xtest.data";
-		String test_y_path = RESOURCES_PATH + "/coursera/ml/ex6/ytest.data";
+		String test_x_path = COURSE_ML_PATH + "/ex6/Xtest.data";
+		String test_y_path = COURSE_ML_PATH + "/ex6/ytest.data";
 		Node[][] test_X = SVMUtil.loadX(test_x_path, "\\s+");
 		double[] test_y = SVMUtil.loadY(test_y_path);
 

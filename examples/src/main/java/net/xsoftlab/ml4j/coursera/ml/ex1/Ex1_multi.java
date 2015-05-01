@@ -19,7 +19,7 @@ public class Ex1_multi extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		String path = RESOURCES_PATH + "/coursera/ml/ex1/ex1data2.txt";
+		String path = COURSE_ML_PATH + "/ex1/ex1data2.txt";
 		FloatMatrix[] matrixs = MatrixUtil.loadDataWithXY(path, ",", false);
 
 		logger.info("特征标准化...\n");

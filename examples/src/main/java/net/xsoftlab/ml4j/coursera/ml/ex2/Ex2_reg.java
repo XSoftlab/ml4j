@@ -18,7 +18,7 @@ public class Ex2_reg extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		String path = RESOURCES_PATH + "/coursera/ml/ex2/ex2data2.txt";
+		String path = COURSE_ML_PATH + "/ex2/ex2data2.txt";
 		FloatMatrix[] matrixs = MatrixUtil.loadDataWithXY(path, ",", false);
 
 		logger.info("参数处理...\n");

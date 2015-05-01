@@ -10,6 +10,8 @@ public class TestUtil {
 	public static Logger logger = LoggerFactory.getLogger(TestUtil.class);
 
 	public static final String RESOURCES_PATH = System.getProperty("user.dir") + "/resources";
+	public static final String COURSE_ML_PATH = RESOURCES_PATH + "/coursera/ml";
+	public static final String UFLDL_NEW_PATH = RESOURCES_PATH + "/ufldl/newVersion";
 
 	public static void tic() {
 		time = System.currentTimeMillis();

@@ -20,7 +20,7 @@ public class Ex2 extends TestUtil {
 
 		logger.info("加载数据...\n");
 
-		String path = RESOURCES_PATH + "/coursera/ml/ex2/ex2data1.txt";
+		String path = COURSE_ML_PATH + "/ex2/ex2data1.txt";
 		FloatMatrix[] matrixs = MatrixUtil.loadDataWithXY(path, ",", false);
 
 		logger.info("训练集特征标准化...\n");

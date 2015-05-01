@@ -22,7 +22,7 @@ public class Ex7_KMeasn extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		String path = RESOURCES_PATH + "/coursera/ml/ex7/ex7data2.data";
+		String path = COURSE_ML_PATH + "/ex7/ex7data2.data";
 		FloatMatrix X = MatrixUtil.loadData(path, "\\s+");
 
 		logger.info("模型初始化...\n");
@@ -44,7 +44,7 @@ public class Ex7_KMeasn extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		String path = RESOURCES_PATH + "/coursera/ml/ex7/bird_small.png";
+		String path = COURSE_ML_PATH + "/ex7/bird_small.png";
 		MatrixImage mi = ImageLoader.load(path);
 		FloatMatrix X = mi.getMatrix();
 

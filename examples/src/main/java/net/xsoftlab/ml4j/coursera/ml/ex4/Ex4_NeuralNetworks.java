@@ -18,10 +18,10 @@ public class Ex4_NeuralNetworks extends TestUtil {
 		tic();
 
 		logger.info("加载数据...\n");
-		String x_path = RESOURCES_PATH + "/coursera/ml/ex3/X.data";
-		String y_path = RESOURCES_PATH + "/coursera/ml/ex3/y.data";
-		// String theta1_path = RESOURCES_PATH + "/coursera/ml/ex4/Theta1.data";
-		// String theta2_path = RESOURCES_PATH + "/coursera/ml/ex4/Theta2.data";
+		String x_path = COURSE_ML_PATH + "/ex3/X.data";
+		String y_path = COURSE_ML_PATH + "/ex3/y.data";
+		// String theta1_path = COURSE_ML_PATH + "/ex4/Theta1.data";
+		// String theta2_path = COURSE_ML_PATH + "/ex4/Theta2.data";
 
 		FloatMatrix X = MatrixUtil.loadData(x_path, "\\s+", true);
 		FloatMatrix y = MatrixUtil.loadData(y_path, "\\s+");
