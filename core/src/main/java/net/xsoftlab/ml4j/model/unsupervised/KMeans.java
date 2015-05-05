@@ -4,6 +4,13 @@ import net.xsoftlab.ml4j.util.MathUtil;
 
 import org.jblas.FloatMatrix;
 
+/**
+ * KMeans
+ * 
+ * @author X
+ *
+ * @data 2015年5月6日
+ */
 public class KMeans {
 
 	private int k;// 聚类中心数量

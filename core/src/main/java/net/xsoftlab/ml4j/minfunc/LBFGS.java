@@ -93,12 +93,12 @@ public class LBFGS extends MinFunc {
 			}
 
 			if (gk1.transpose().mmul(gk1).get(0) < epsilon) {
-				logger.info("\n已达到梯度精度阀值.\n");
+				logger.info("\n已达到梯度精度阈值.\n");
 				break;
 			}
 
 			if (cost0 - cost1 < epsilon) {
-				logger.info("\n已达到cost精度阀值.\n");
+				logger.info("\n已达到cost精度阈值.\n");
 				break;
 			}
 

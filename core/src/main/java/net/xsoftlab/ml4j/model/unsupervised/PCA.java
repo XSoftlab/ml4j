@@ -3,6 +3,13 @@ package net.xsoftlab.ml4j.model.unsupervised;
 import org.jblas.FloatMatrix;
 import org.jblas.Singular;
 
+/**
+ * PCA
+ * 
+ * @author X
+ *
+ * @data 2015年5月6日
+ */
 public class PCA {
 
 	private FloatMatrix u;// eigenvectors 0

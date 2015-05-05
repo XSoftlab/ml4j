@@ -9,6 +9,7 @@
 * 无监督学习
 	* K-means
 	* PCA
+	* AnomalyDetection 异常检测
 
 ### 最优化算法
 * 梯度下降
@@ -26,3 +27,4 @@
 * 无监督学习
 	* K-mean - 将24位的有上千种颜色的RGB图象压缩至16种颜色。
 	* PCA - 人脸数据降维
+	* AnomalyDetection 异常检测

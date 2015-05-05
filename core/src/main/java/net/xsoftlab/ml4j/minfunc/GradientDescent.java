@@ -65,7 +65,7 @@ public class GradientDescent extends MinFunc {
 				logger.debug("  {} \t   {}   \t {}", new Object[] { i + 1, step, cost1 });
 			}
 			if (step < epsilon) {
-				logger.info("\n已达到精度阀值.\n");
+				logger.info("\n已达到精度阈值.\n");
 				return theta;
 			}
 

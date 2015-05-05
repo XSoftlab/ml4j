@@ -14,6 +14,8 @@ import java.util.Map;
 
 import net.xsoftlab.ml4j.exception.Ml4jException;
 
+import org.jblas.Decompose;
+import org.jblas.Decompose.LUDecomposition;
 import org.jblas.FloatMatrix;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -464,33 +466,87 @@ public class MatrixUtil {
 	}
 
 	/**
-	 * 计算向量的开方
+	 * 计算矩阵方差(N-1)
 	 * 
-	 * @param vector
-	 *            要计算的向量
-	 * @return 计算好的向量
+	 * @param x
+	 *            要计算的矩阵
+	 * @param dim
+	 *            1 计算列标准差，2计算行标准差
+	 * @return 计算好的方差矩阵
 	 */
-	public static FloatMatrix pow(FloatMatrix vector, int time) {
+	public static FloatMatrix var(FloatMatrix x, int dim) {
 
-		if (!vector.isVector())
-			Ml4jException.logAndThrowException("参数vector必须是向量！");
-		else if (time < 0) {
-			Ml4jException.logAndThrowException("参数time必须是大于或等于0的整数！");
-		}
-
-		if (time == 0)
-			return FloatMatrix.ones(vector.rows, vector.columns);
-
-		FloatMatrix result = vector.dup();// copy矩阵
-		for (int i = 1; i < time; i++) {
-			result.muli(vector);
-		}
-
-		return result;
+		return var(x, true, dim);
 	}
 
 	/**
-	 * 计算矩阵标准差(又称均方差)(N-1)
+	 * 计算矩阵方差
+	 * 
+	 * @param x
+	 *            要计算的矩阵
+	 * @param flag
+	 *            true计算除以N-1,false计算除以N
+	 * @param dim
+	 *            1 计算列标准差，2计算行标准差
+	 * @return 计算好的方差矩阵
+	 */
+	public static FloatMatrix var(FloatMatrix x, boolean flag, int dim) {
+
+		int size;
+		FloatMatrix mu;// 平均值
+		FloatMatrix std = null;// 计算结果
+
+		if (dim == 1) {
+			size = x.columns;
+			mu = x.columnMeans();
+			std = new FloatMatrix(1, size);
+			for (int i = 0; i < size; i++) {
+				std.put(i, var(x.getColumn(i), mu.get(new int[] { i }), flag));
+			}
+		} else if (dim == 2) {
+			size = x.rows;
+			mu = x.rowMeans();
+			std = new FloatMatrix(size, 1);
+			for (int i = 0; i < size; i++) {
+				std.put(i, var(x.getRow(i), mu.get(new int[] { i }), flag));
+			}
+		}
+
+		return std;
+	}
+
+	/**
+	 * 计算两个向量的方差
+	 * 
+	 * @param vector1
+	 *            向量1
+	 * @param vector2
+	 *            向量2
+	 * @param flag
+	 *            true计算除以N-1,false计算除以N
+	 * @return 方差
+	 */
+	public static float var(FloatMatrix vector1, FloatMatrix vector2, boolean flag) {
+
+		if (!vector1.isVector() || !vector2.isVector()) {
+			Ml4jException.logAndThrowException("参数必须是向量！");
+		}
+
+		int n;// 数量，被除数
+		float std;// 标准差
+		float sum;// 和
+		FloatMatrix temp;
+
+		n = flag ? vector1.length - 1 : vector1.length;
+		temp = vector1.sub(vector2);
+		sum = temp.transpose().mmul(temp).get(0);
+		std = (float) sum / (float) n;
+
+		return std;
+	}
+
+	/**
+	 * 计算矩阵标准差(N-1)
 	 * 
 	 * @param x
 	 *            要计算的矩阵
@@ -504,7 +560,7 @@ public class MatrixUtil {
 	}
 
 	/**
-	 * 计算矩阵标准差(又称均方差)
+	 * 计算矩阵标准差
 	 * 
 	 * @param x
 	 *            要计算的矩阵
@@ -540,7 +596,7 @@ public class MatrixUtil {
 	}
 
 	/**
-	 * 计算两个向量的标准差(又称均方差)
+	 * 计算两个向量的标准差
 	 * 
 	 * @param vector1
 	 *            向量1
@@ -570,7 +626,7 @@ public class MatrixUtil {
 	}
 
 	/**
-	 * 计算两个向量的标准差(又称均方差)(N-1)
+	 * 计算两个向量的标准差(N-1)
 	 * 
 	 * @param vector1
 	 *            向量1
@@ -581,5 +637,17 @@ public class MatrixUtil {
 	public static float std(FloatMatrix vector1, FloatMatrix vector2) {
 
 		return std(vector1, vector2, true);
+	}
+
+	/**
+	 * 计算矩阵行列式
+	 * 
+	 * @param matrix 要计算的矩阵
+	 * @return 行列式结果
+	 */
+	public static float det(FloatMatrix matrix) {
+
+		LUDecomposition<FloatMatrix> lup = Decompose.lu(matrix);
+		return lup.u.diag().prod();
 	}
 }

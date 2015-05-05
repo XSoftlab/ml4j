@@ -16,7 +16,7 @@ public abstract class MinFunc {
 
 	protected BaseModel model;// 训练模型
 	protected int maxIter = 500;// 最大训练次数
-	protected float epsilon = (float) 1e-6;// 精度阀值
+	protected float epsilon = (float) 1e-6;// 精度阈值
 
 	protected FloatMatrix theta;// 参数
 	protected boolean logFlag = true;// 是否打印过程日志

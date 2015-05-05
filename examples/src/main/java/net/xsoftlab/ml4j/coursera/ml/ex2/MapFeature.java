@@ -3,9 +3,8 @@ package net.xsoftlab.ml4j.coursera.ml.ex2;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.xsoftlab.ml4j.util.MatrixUtil;
-
 import org.jblas.FloatMatrix;
+import org.jblas.MatrixFunctions;
 
 public class MapFeature {
 
@@ -16,7 +15,7 @@ public class MapFeature {
 		List<FloatMatrix> list = new ArrayList<FloatMatrix>();
 		for (int i = 1; i <= degree; i++) {
 			for (int j = 0; j <= i; j++) {
-				list.add(MatrixUtil.pow(X1, i - j).mul(MatrixUtil.pow(X2, j)));
+				list.add(MatrixFunctions.pow(X1, i - j).mul(MatrixFunctions.pow(X2, j)));
 			}
 		}
 
