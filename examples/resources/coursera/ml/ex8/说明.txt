@@ -12,4 +12,11 @@
 >> save data2_Xval.data Xval -ascii
 >> save data2_yval.data yval -ascii
 
-然后将保存的文件copy到本文件夹。
+>> load('ex8_movies.mat')
+>> save ex8_movies_Y.data Y -ascii
+
+>> load('ex8_movieParams.mat')
+>> save ex8_movies_X.data X -ascii
+>> save ex8_movies_Theta.data Theta -ascii
+
+然后将保存的文件copy到本文件夹，复制 movie_ids.txt到本文件夹。

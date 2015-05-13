@@ -69,7 +69,7 @@ public class NeuralNetworks extends BaseModel {
 	}
 
 	@Override
-	public void compute(FloatMatrix theta, int flag) {
+	public Object compute(FloatMatrix theta, int flag) {
 
 		FloatMatrix theta1 = theta.getRange(0, (inputLayerSize + 1) * hiddenLayerSize);
 		FloatMatrix theta2 = theta.getRange((inputLayerSize + 1) * hiddenLayerSize, theta.length);
@@ -99,7 +99,7 @@ public class NeuralNetworks extends BaseModel {
 				FloatMatrix theta4 = theta2.getRange(1, theta2.length);
 				float cost1 = lambda / (2 * m)
 						* (theta3.transpose().mmul(theta3).sum() + theta4.transpose().mmul(theta4).sum());
-				cost += cost1;
+				this.cost += cost1;
 			}
 		}
 
@@ -124,12 +124,8 @@ public class NeuralNetworks extends BaseModel {
 			theta2Grad = theta2Grad.div(m);
 			this.gradient = MatrixUtil.merge(theta1Grad.data, theta2Grad.data);
 		}
-	}
 
-	@Override
-	public float evaluate(FloatMatrix theta) {
-
-		return evaluate(theta, x, y);
+		return flag == 1 ? this.cost : this.gradient;
 	}
 
 	@Override

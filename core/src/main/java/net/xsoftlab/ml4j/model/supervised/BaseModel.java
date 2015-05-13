@@ -29,7 +29,7 @@ public abstract class BaseModel {
 	 *            1.计算cost 2.计算梯度 3.计算全部
 	 * @return 梯度/cost
 	 */
-	public abstract void compute(FloatMatrix theta, int flag);
+	public abstract Object compute(FloatMatrix theta, int flag);
 
 	/**
 	 * 准确度评测
@@ -38,7 +38,10 @@ public abstract class BaseModel {
 	 *            训练好的theta
 	 * @return 准确度
 	 */
-	public abstract float evaluate(FloatMatrix theta);
+	public float evaluate(FloatMatrix theta) {
+
+		return evaluate(theta, x, y);
+	}
 
 	/**
 	 * 准确度评测

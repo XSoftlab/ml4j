@@ -45,7 +45,7 @@ public class LogisticRegression extends BaseModel {
 	}
 
 	@Override
-	public void compute(FloatMatrix theta, int flag) {
+	public Object compute(FloatMatrix theta, int flag) {
 
 		// sigmoid(X * theta)
 		FloatMatrix h = MatrixUtil.sigmoid(x.mmul(theta));
@@ -60,7 +60,7 @@ public class LogisticRegression extends BaseModel {
 			if (lambda != 0) {
 				FloatMatrix theta1 = theta.getRange(1, theta.length);
 				float cost1 = lambda / (2 * m) * theta1.transpose().mmul(theta1).get(0);
-				cost += cost1;
+				this.cost += cost1;
 			}
 		}
 
@@ -77,12 +77,8 @@ public class LogisticRegression extends BaseModel {
 
 			this.gradient = h2.div(m);
 		}
-	}
 
-	@Override
-	public float evaluate(FloatMatrix theta) {
-
-		return evaluate(theta, x, y);
+		return flag == 1 ? this.cost : this.gradient;
 	}
 
 	@Override
