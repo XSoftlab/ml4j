@@ -26,9 +26,8 @@ public class Ex1 extends TestUtil {
 		BaseModel model = new LinearRegression(matrixs[0], matrixs[1]);
 
 		logger.info("执行训练...\n");
-		// MinFunc minFunc = new BFGS(model);
 		MinFunc minFunc = new GradientDescent(model, 0.024f, 1500);
-		FloatMatrix theta = minFunc.train();
+		FloatMatrix theta = model.train(minFunc);
 
 		logger.info("计算均方差...\n");
 		float rms = model.evaluate(theta);

@@ -2,8 +2,6 @@ package net.xsoftlab.ml4j.coursera.ml.ex3;
 
 import java.io.IOException;
 
-import net.xsoftlab.ml4j.minfunc.LBFGS;
-import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.supervised.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
 import net.xsoftlab.ml4j.util.MatrixUtil;
@@ -28,7 +26,6 @@ public class Ex3_OneVsAll extends TestUtil {
 		int num_labels = 10;
 		FloatMatrix all_theta = FloatMatrix.zeros(X.columns, num_labels);
 
-		MinFunc minFunc = null;
 		BaseModel model = null;
 		FloatMatrix theta = null;
 		for (int i = 1; i <= num_labels; i++) {
@@ -37,8 +34,7 @@ public class Ex3_OneVsAll extends TestUtil {
 			model = new LogisticRegression(X, y.eq(i));
 
 			logger.info("执行训练...\n");
-			minFunc = new LBFGS(model, 50);
-			theta = minFunc.train();
+			theta = model.train(50);// 使用默认的最优化函数
 			all_theta.putColumn(i - 1, theta);
 		}
 

@@ -1,5 +1,8 @@
 package net.xsoftlab.ml4j.model.supervised;
 
+import net.xsoftlab.ml4j.minfunc.LBFGS;
+import net.xsoftlab.ml4j.minfunc.MinFunc;
+
 import org.jblas.FloatMatrix;
 
 /**
@@ -30,6 +33,35 @@ public abstract class BaseModel {
 	 * @return 梯度/cost
 	 */
 	public abstract Object compute(FloatMatrix theta, int flag);
+
+	/**
+	 * 计算最优化theta - 使用默认的minFunc(l-bfgs)
+	 * 
+	 * @return theta
+	 */
+	public FloatMatrix train() {
+		return train(new LBFGS(this));
+	}
+
+	/**
+	 * 计算最优化theta - 使用默认的minFunc(l-bfgs)
+	 * 
+	 * @param maxIter 最大迭代次数
+	 * 
+	 * @return theta
+	 */
+	public FloatMatrix train(int maxIter) {
+		return train(new LBFGS(this, maxIter));
+	}
+
+	/**
+	 * 计算最优化theta
+	 * 
+	 * @return theta
+	 */
+	public FloatMatrix train(MinFunc minFunc) {
+		return minFunc.train();
+	}
 
 	/**
 	 * 准确度评测

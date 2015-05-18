@@ -3,8 +3,6 @@ package net.xsoftlab.ml4j.ufldl.newVersion.ex1;
 import java.io.IOException;
 
 import net.xsoftlab.ml4j.common.FeatureNormalize;
-import net.xsoftlab.ml4j.minfunc.LBFGS;
-import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.supervised.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LinearRegression;
 import net.xsoftlab.ml4j.util.MatrixUtil;
@@ -47,9 +45,7 @@ public class Ex_LinearRegression extends TestUtil {
 		BaseModel model = new LinearRegression(train_x, train_y);
 
 		logger.info("执行训练...\n");
-		// MinFunc minFunc = new GradientDescent(model, 0.3f);
-		MinFunc minFunc = new LBFGS(model);
-		FloatMatrix theta = minFunc.train();
+		FloatMatrix theta = model.train();
 
 		logger.info("计算训练集均方差...\n");
 		float trainRms = model.evaluate(theta);

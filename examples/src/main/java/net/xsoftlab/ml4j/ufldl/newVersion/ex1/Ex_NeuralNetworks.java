@@ -3,8 +3,6 @@ package net.xsoftlab.ml4j.ufldl.newVersion.ex1;
 import java.io.IOException;
 import java.util.Map;
 
-import net.xsoftlab.ml4j.minfunc.LBFGS;
-import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.supervised.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.NeuralNetworks;
 import net.xsoftlab.ml4j.util.MnistLoader;
@@ -32,8 +30,7 @@ public class Ex_NeuralNetworks extends TestUtil {
 		BaseModel model = new NeuralNetworks(inputLayerSize, hiddenLayerSize, numLabels, train[0], train[1], 1);
 
 		logger.info("执行训练...\n");
-		MinFunc minFunc = new LBFGS(model);
-		FloatMatrix theta = minFunc.train();
+		FloatMatrix theta = model.train();
 
 		logger.info("准确度测算...\n");
 

@@ -7,8 +7,6 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.xsoftlab.ml4j.minfunc.LBFGS;
-import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.supervised.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.CollaborativeFiltering;
 import net.xsoftlab.ml4j.util.MatrixUtil;
@@ -70,8 +68,7 @@ public class Ex8_RecommenderSystems extends TestUtil {
 		FloatMatrix yMean = ((CollaborativeFiltering) model).normalizeRatings();
 
 		logger.info("执行训练...\n");
-		MinFunc minFunc = new LBFGS(model, 100);
-		FloatMatrix params = minFunc.train();
+		FloatMatrix params = model.train();
 
 		logger.info("训练完毕...\n");
 		int numUsers = y.columns;

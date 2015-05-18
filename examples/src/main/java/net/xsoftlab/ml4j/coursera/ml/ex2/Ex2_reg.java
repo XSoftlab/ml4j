@@ -28,9 +28,8 @@ public class Ex2_reg extends TestUtil {
 		BaseModel model = new LogisticRegression(x, matrixs[1], 1);
 
 		logger.info("使用BFGS执行训练...\n");
-		// MinFunc minFunc = new BFGS(model);
 		MinFunc minFunc = new GradientDescent(model, 1f);
-		FloatMatrix theta = minFunc.train();
+		FloatMatrix theta = model.train(minFunc);
 
 		logger.info("准确度测算...\n");
 		float p = model.evaluate(theta);

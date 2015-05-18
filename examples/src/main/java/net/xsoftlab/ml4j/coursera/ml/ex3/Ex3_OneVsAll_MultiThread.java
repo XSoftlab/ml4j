@@ -5,7 +5,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import net.xsoftlab.ml4j.minfunc.BFGS;
 import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.supervised.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.LogisticRegression;
@@ -86,8 +85,7 @@ class OneVsAllThread implements Runnable {
 	@Override
 	public void run() {
 
-		minFunc = new BFGS(model);
-		theta = minFunc.train();
+		theta = model.train();
 		synchronized (all_theta) {
 			all_theta.putColumn(i - 1, theta);
 		}

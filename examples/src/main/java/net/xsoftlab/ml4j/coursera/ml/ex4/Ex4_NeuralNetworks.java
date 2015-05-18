@@ -2,8 +2,6 @@ package net.xsoftlab.ml4j.coursera.ml.ex4;
 
 import java.io.IOException;
 
-import net.xsoftlab.ml4j.minfunc.LBFGS;
-import net.xsoftlab.ml4j.minfunc.MinFunc;
 import net.xsoftlab.ml4j.model.supervised.BaseModel;
 import net.xsoftlab.ml4j.model.supervised.NeuralNetworks;
 import net.xsoftlab.ml4j.util.MatrixUtil;
@@ -42,8 +40,7 @@ public class Ex4_NeuralNetworks extends TestUtil {
 		// System.out.println(model.getCost());
 
 		logger.info("执行训练...\n");
-		MinFunc minFunc = new LBFGS(model);
-		FloatMatrix theta = minFunc.train();
+		FloatMatrix theta = model.train();
 
 		logger.info("准确度测算...\n");
 		float p = model.evaluate(theta);

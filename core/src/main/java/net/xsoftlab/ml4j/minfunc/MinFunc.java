@@ -24,7 +24,7 @@ public abstract class MinFunc {
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	/**
-	 * 最优化theta
+	 * 计算最优化theta
 	 * 
 	 * @return theta
 	 */
